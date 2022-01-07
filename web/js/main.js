@@ -203,6 +203,7 @@ function set_playing_metadata(data) {
     playing_albumart.setAttribute(
         'src', data.image
     );
+    document.documentElement.style.backgroundImage = `url('${ data.image }')`;
     playing_artist.textContent = data.artist;
     playing_title.textContent = data.title;
     playing_time_total.textContent = duration_to_str(data.duration);

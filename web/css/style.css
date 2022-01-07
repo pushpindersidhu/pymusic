@@ -99,8 +99,9 @@ img {
   -webkit-touch-callout: none;
 }
 
-html{
-  background: black no-repeat center center fixed; 
+html {
+  background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364) no-repeat center
+    center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -112,11 +113,12 @@ html body {
 }
 
 body {
+  background: rgba(0, 0, 0, .8);
   position: absolute;
   top: 0px;
   left: 0px;
   bottom: 0px;
-  right: 0px; 
+  right: 0px;
   width: 100vw;
   color: var(--body-color);
   backdrop-filter: blur(var(--background-blur));
@@ -301,7 +303,7 @@ main {
 
 #tracks-table td:first-child,
 #tracks-table td:nth-child(3),
-#tracks-table td:last-child{
+#tracks-table td:last-child {
   padding: 12px 8px;
 }
 
