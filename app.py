@@ -67,7 +67,7 @@ for i, result in enumerate(results):
         vars.COVER_PATH, remove_invalid_chars(f'{result.get("album")}.jpg'.strip()))
     if cover not in list(COVERS.keys()):
         COVERS[cover] = result['image']
-    result['image'] = f'http://{ FILESERVER_HOST }:{ FILESERVER_PORT }' + cover
+    result['image'] = f'http://{FILESERVER_HOST}:{FILESERVER_PORT}' + cover
     TRACKS.append(result)
 
 with ThreadPoolExecutor() as executor:
@@ -90,11 +90,11 @@ eel.init('web')
 def play_track(index):
     global INDEX
     INDEX = index
-    if mediaPlayer.is_playing():
+    if mediaPlayer.isPlaying():
         mediaPlayer.stop()
     path = TRACKS[index].get('path')
-    if os.path.exists(path):    
-        mediaPlayer.set_media(path)
+    if os.path.exists(path):
+        mediaPlayer.setMedia(path)
         mediaPlayer.play()
         # noinspection PyUnresolvedReferences
         eel.set_playPause()
@@ -115,7 +115,7 @@ def get_playing_metadata():
 
 @eel.expose
 def is_playing():
-    return mediaPlayer.is_playing()
+    return mediaPlayer.isPlaying()
 
 
 @eel.expose
@@ -134,7 +134,7 @@ def play_pause():
     if INDEX == -1:
         play_track(0)
     else:
-        if mediaPlayer.is_playing():
+        if mediaPlayer.isPlaying():
             mediaPlayer.pause()
         else:
             mediaPlayer.unpause()
@@ -158,12 +158,12 @@ def previous_track():
 
 @eel.expose
 def set_volume(volume):
-    mediaPlayer.set_volume(int(volume))
+    mediaPlayer.setVolume(int(volume))
 
 
 @eel.expose
 def get_volume():
-    return mediaPlayer.get_volume()
+    return mediaPlayer.getVolume()
 
 
 @eel.expose
@@ -173,9 +173,9 @@ def get_total_duration():
 
 @eel.expose
 def get_duration():
-    duration = mediaPlayer.get_time()
-    print(mediaPlayer.get_position())
-    if mediaPlayer.get_position() == -1:
+    duration = mediaPlayer.getTime()
+    print(mediaPlayer.getPosition())
+    if mediaPlayer.getPosition() == -1:
         complete()
         return 0
     duration = int(duration / 1000)
@@ -185,7 +185,7 @@ def get_duration():
 @eel.expose
 def seek_to(position):
     position = (int(position * 100_000_000) / 10_000_000_000)
-    mediaPlayer.set_position(position)
+    mediaPlayer.setPosition(position)
 
 
 @eel.expose
@@ -197,7 +197,6 @@ def data():
 @eel.expose
 def data_path():
     return vars.DATA_PATH
-
 
 
 FILESERVER = multiprocessing.Process(target=start_fileserver, args=(FILESERVER_HOST, FILESERVER_PORT,))
