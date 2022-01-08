@@ -1,6 +1,7 @@
 import enum
 from vlc import State
 
+
 class MediaPlayerState(enum.Enum):
     NothingSpecial = State.NothingSpecial
     Opening = State.Opening
