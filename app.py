@@ -31,6 +31,8 @@ FILESERVER_HOST = '127.0.0.1'
 FILESERVER_PORT = 1984
 INVALID_CHARACTERS = '/\\:*?"<>|'
 
+eel.browsers.set_path('electron', 'node_modules/electron/dist/electron')
+
 while not port_availability(HOST, PORT):
     PORT = random.randint(1000, 65000)
 while not port_availability(FILESERVER_HOST, FILESERVER_PORT):
@@ -261,6 +263,7 @@ mediaPlayer.setOnMediaPlayerMediaChangedCallback(onMediaPlayerMediaChangedCallba
 
 eel.start(
     'templates/index.html',
+    mode='electron',
     port=PORT,
     jinja_templates='templates',
     jinja_global=jinja_globals,

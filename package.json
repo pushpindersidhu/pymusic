@@ -1,0 +1,25 @@
+{
+  "name": "sidhu",
+  "version": "1.0.0",
+  "description": "Sidhu",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Sidhu",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pushpindersidhu/pymusic.git"
+  },
+  "keywords": [
+    "Sidhu"
+  ],
+  "bugs": {
+    "url": "https://github.com/pushpindersidhu/pymusic/issues"
+  },
+  "homepage": "https://github.com/pushpindersidhu/pymusic#readme",
+  "dependencies": {
+    "electron": "^16.0.6"
+  }
+}
