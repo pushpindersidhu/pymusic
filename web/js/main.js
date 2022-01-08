@@ -71,11 +71,10 @@ for (let i = 0; i < nav_items.length; i++) {
 document.onkeypress = (e) => {
     if (e.code === 'Space') {
         e.preventDefault();
-        eel.play_pause()(() => {
-            set_playPause();
-        });
+        eel.play_pause();
     }
 }
+
 
 eel.get_volume()((volume) => {
     volume_slider.value = volume
@@ -87,6 +86,11 @@ eel.get_playing_metadata()((data) => {
         set_playing_metadata(data);
     }
 });
+
+eel.is_playing()((result) => {
+    set_playPause(result);
+});
+
 
 seekbar.style.background = `linear-gradient(to right, ${seekbar_track_color} 0%, ${seekbar_track_color}  0%, ${seekbar_track_bg_color} 0%, ${seekbar_track_bg_color} 100%)`;
 
@@ -132,68 +136,37 @@ volume_slider.oninput = function () {
 };
 
 
-
 eel.expose(audio_complete);
 function audio_complete() {
-    window.clearInterval(seekbar_updater);
     eel.complete();
 }
 
-function update_seekbar() {
-    eel.get_duration()((duration) => {
-        playing_time_elapsed.textContent = duration_to_str(duration);
-        seekbar.value = duration;
-        var value = (seekbar.value - seekbar.min) / (seekbar.max - seekbar.min) * 100
-        seekbar.style.background = `linear-gradient(to right, ${seekbar_track_color} 0%, ${seekbar_track_color}  ${value}%, ${seekbar_track_bg_color} ${value}%, ${seekbar_track_bg_color} 100%)`;
-    });
+eel.expose(update_seekbar)
+function update_seekbar(duration) {
+    playing_time_elapsed.textContent = duration_to_str(duration);
+    seekbar.value = duration;
+    var value = (seekbar.value - seekbar.min) / (seekbar.max - seekbar.min) * 100
+    seekbar.style.background = `linear-gradient(to right, ${seekbar_track_color} 0%, ${seekbar_track_color}  ${value}%, ${seekbar_track_bg_color} ${value}%, ${seekbar_track_bg_color} 100%)`;
 };
 
-var seekbar_updater;
-
-eel.get_playing_metadata()((data) => {
-    if (data) {
-        set_playing_metadata(data);
-    }
-});
 
 btn_play_pause.addEventListener('click', () => {
-    eel.play_pause()(() => {
-        set_playPause();
-    });
+    eel.play_pause();
 });
 
 btn_next.addEventListener('click', () => {
-    eel.next_track()(() => {
-        eel.get_playing_metadata()((data) => {
-            set_playing_metadata(data);
-        });
-    });
+    eel.next_track();
 });
 
 btn_previous.addEventListener('click', () => {
-    eel.previous_track()(() => {
-        eel.get_playing_metadata()((data) => {
-            set_playing_metadata(data);
-        });
-    });
+    eel.previous_track();
 });
 
 const tracks_list = tracks_table.getElementsByClassName('tracks-table-row');
 for (let i = 0; i < tracks_list.length; i++) {
     const track = tracks_list[i];
     track.addEventListener("click", function (e) {
-        eel.play_track(parseInt(this.getElementsByClassName('tracks-table-row-id')[0].textContent) - 1)((result) => {
-            if (result) {
-                window.clearInterval(seekbar_updater);
-                seekbar_updater = window.setInterval(update_seekbar, 1000);
-                eel.get_playing_metadata()((data) => {
-                    set_playing_metadata(data);
-                });
-            } else {
-                window.clearInterval(seekbar_updater);
-                clear_playing_metadata();
-            }
-        });
+        eel.play_track(parseInt(this.getElementsByClassName('tracks-table-row-id')[0].textContent) - 1);
     });
 }
 
@@ -211,7 +184,6 @@ function set_playing_metadata(data) {
     seekbar.max = data.duration;
     seekbar.value = 0;
     seekbar.style.background = 'linear-gradient(to right, #b3b3b3 0%, #b3b3b3 ' + 0 + '%, #505050 ' + 0 + '%, #505050 100%)';
-    set_playPause();
 }
 
 function clear_playing_metadata() {
@@ -224,23 +196,17 @@ function clear_playing_metadata() {
 
 eel.expose(set_playPause);
 
-function set_playPause() {
-    update_seekbar();
-    eel.is_playing()((result) => {
-        if (result) {
-            window.clearInterval(seekbar_updater);
-            seekbar_updater = window.setInterval(update_seekbar, 1000);
-            btn_play_pause.setAttribute(
-                'src', '../icons/pause.svg'
-            );
-        }
-        else {
-            btn_play_pause.setAttribute(
-                'src', '../icons/play.svg'
-            );
-            window.clearInterval(seekbar_updater);
-        }
-    });
+function set_playPause(is_playing) {
+    if (is_playing) {
+        btn_play_pause.setAttribute(
+            'src', '../icons/pause.svg'
+        );
+    }
+    else {
+        btn_play_pause.setAttribute(
+            'src', '../icons/play.svg'
+        );
+    }
 }
 
 function duration_to_str(duration) {

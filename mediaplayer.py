@@ -1,9 +1,12 @@
 import vlc
+import sys
+import threading
 from playback_status import PlaybackStatus
+from mediaplayer_state import MediaState
 
 
 class MediaPlayer:
-
+    
     onMediaPlayerTimeChanged = None
     onMediaPlayerPositionChanged = None
     onMediaDurationChanged = None
@@ -21,11 +24,17 @@ class MediaPlayer:
         self.instance = vlc.Instance()
         self.mediaPlayer = self.instance.media_player_new()
         self.eventManager = self.mediaPlayer.event_manager()
-        self.media = None
+        self.media = self.instance.media_new('')
+        self.mediaEventManager = self.media.event_manager()
+        self.volume = 50
         self.playbackstatus = PlaybackStatus.STOPPED
 
+
     def setMedia(self, mrl):
+        self.mediaEventManager.event_detach(vlc.EventType.MediaStateChanged)
         self.media = self.instance.media_new(mrl)
+        self.mediaEventManager = self.media.event_manager()
+        self.setOnMediaStateChangedCallback(self.onMediaStateChanged)
         self.mediaPlayer.set_media(self.media)
 
     def release(self):
@@ -58,24 +67,27 @@ class MediaPlayer:
             self.onMediaDurationChanged()
 
     def setOnMediaDurationChangedCallback(self, callback):
-        self.eventManager.event_attach(vlc.EventType.MediaDurationChanged,
+        self.mediaEventManager.event_attach(vlc.EventType.MediaDurationChanged,
                                        self.onMediaDurationChangedCallback)
         self.onMediaDurationChanged = callback
 
     @vlc.callbackmethod
     def onMediaStateChangedCallback(self, event):
         if self.onMediaStateChanged is not None:
-            self.onMediaStateChanged()
+            thread = threading.Thread(target=self.onMediaStateChanged).start()
+            del thread
 
     def setOnMediaStateChangedCallback(self, callback):
-        self.eventManager.event_attach(vlc.EventType.MediaStateChanged,
+        self.mediaEventManager.event_attach(vlc.EventType.MediaStateChanged,
                                        self.onMediaStateChangedCallback)
         self.onMediaStateChanged = callback
 
     @vlc.callbackmethod
     def onMediaPlayerEndReachedCallback(self, event):
         if self.onMediaPlayerEndReached is not None:
-            self.onMediaPlayerEndReached()
+            thread = threading.Thread(target=self.onMediaPlayerEndReached).start()
+            del thread
+            
 
     def setOnMediaPlayerEndReachedCallback(self, callback):
         self.eventManager.event_attach(vlc.EventType.MediaPlayerEndReached,
@@ -88,7 +100,7 @@ class MediaPlayer:
             self.onMediaPlayerMediaChanged()
 
     def setOnMediaPlayerMediaChangedCallback(self, callback):
-        self.eventManager.event_attach(vlc.EventType.MediaPlayerPositionChanged,
+        self.eventManager.event_attach(vlc.EventType.MediaPlayerMediaChanged,
                                        self.onMediaPlayerMediaChangedCallback)
         self.onMediaPlayerMediaChanged = callback
 
@@ -97,9 +109,11 @@ class MediaPlayer:
 
     def play(self):
         self.mediaPlayer.play()
+        self.setVolume(self.volume)
         self.playbackstatus = PlaybackStatus.PLAYING
 
     def stop(self):
+        self.mediaEventManager.event_detach(vlc.EventType.MediaStateChanged)
         self.mediaPlayer.stop()
         self.playbackstatus = PlaybackStatus.STOPPED
 
@@ -119,11 +133,12 @@ class MediaPlayer:
         self.mediaPlayer.get_length()
 
     def getState(self):
-        self.mediaPlayer.get_state()
+        return self.mediaPlayer.get_state()
 
     def setVolume(self, volume):
+        self.volume = volume
         return self.mediaPlayer.audio_set_volume(volume)
-
+        
     def getVolume(self):
         return self.mediaPlayer.audio_get_volume()
 
@@ -131,7 +146,7 @@ class MediaPlayer:
         return self.playbackstatus
 
     def isPlaying(self):
-        return self.playbackstatus == PlaybackStatus.PLAYING
+        return self.getState().value == MediaState.Playing.value
 
     def setPosition(self, position):
         self.mediaPlayer.set_position(position)
@@ -149,29 +164,55 @@ class MediaPlayer:
 if __name__ == '__main__':
     import time
 
-    def onTimeChanged():
-        print(mediaPlayer.getPosition())
-
     mediaPlayer = MediaPlayer()
-    mediaPlayer.setOnMediaPlayerPositionChangedCallback(onTimeChanged)
+
+
+    def onMediaPlayerTimeChangedCallback():
+        print(mediaPlayer.getTime())
+        return
+
+
+    def onMediaStateChangedCallback():
+        print('state', mediaPlayer.getState())
+        return
+
+    def reset():
+        mediaPlayer.setMedia('/home/sidhu/Music/Sidhu/10. The Weeknd - Tears In The Rain.flac')
+        mediaPlayer.play()
+
+
+    def onMediaPlayerEndReachedCallback():
+        print('calling end')
+        reset()
+        print(mediaPlayer.getState())
+        sys.exit()
+        
+
+
+    def onMediaPlayerMediaChangedCallback():
+        print('media changed')
+        return
+
+    def onMediaDurationChangedCallback():
+        print('duration changed')
+        return
+
+
+    mediaPlayer.setOnMediaPlayerTimeChangedCallback(onMediaPlayerTimeChangedCallback)
+    mediaPlayer.setOnMediaStateChangedCallback(onMediaStateChangedCallback)
+    mediaPlayer.setOnMediaPlayerEndReachedCallback(onMediaPlayerEndReachedCallback)
+    mediaPlayer.setOnMediaPlayerMediaChangedCallback(onMediaPlayerMediaChangedCallback)
+    mediaPlayer.setOnMediaDurationChangedCallback(onMediaDurationChangedCallback)
     mediaPlayer.setMedia('/home/sidhu/Music/Sidhu/10. The Weeknd - Tears In The Rain.flac')
-    mediaPlayer.setVolume(10)
-    print("Volume: ", mediaPlayer.getVolume())
     mediaPlayer.play()
-    mediaPlayer.setPosition(0.50)
-    print('Playing at length: 50%')
-    time.sleep(1)
-    mediaPlayer.pause()
-    print('Paused')
-    time.sleep(1)
-    print('Playing...')
-    mediaPlayer.unpause()
-    time.sleep(1)
-    print('Restarting...')
+    mediaPlayer.setPosition(0.999)
+
+    time.sleep(5)
+
+    mediaPlayer.setVolume(50)
+    mediaPlayer.play()
     mediaPlayer.restart()
-    print('Playing at time: 100s')
     mediaPlayer.setTime(50)
-    print('Setting volume: 1')
     mediaPlayer.setVolume(0)
     time.sleep(1)
     print(mediaPlayer.getVolume())
@@ -179,3 +220,5 @@ if __name__ == '__main__':
     print(mediaPlayer.getPlaybackStatus())
     print(mediaPlayer.getPosition())
     print(mediaPlayer.isPlaying())
+    input()
+    

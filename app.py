@@ -1,4 +1,6 @@
+import sys
 import eel
+import threading
 import vars
 import os
 import eel.browsers
@@ -14,11 +16,14 @@ from start_fileserver import start_fileserver
 from port_availability import port_availability
 from kill_fileserver import kill_fileserver
 from playback_status import PlaybackStatus
+from mediaplayer_state import MediaState
+
 
 START = time.perf_counter()
 TRACKS_PATH_LIST = []
 TRACKS = []
 mediaPlayer = MediaPlayer()
+mediaPlayer.setVolume(50)
 INDEX = -1
 HOST = '127.0.0.1'
 PORT = 5911
@@ -63,8 +68,11 @@ COVERS = {}
 for i, result in enumerate(results):
     result['id'] = i + 1
     result['formatted_duration'] = duration_to_str(result['duration'])
+    cover_name = result.get("album")
+    if cover_name == 'Unknown Album':
+        cover_name = result.get('title')
     cover = os.path.join(
-        vars.COVER_PATH, remove_invalid_chars(f'{result.get("album")}.jpg'.strip()))
+        vars.COVER_PATH, remove_invalid_chars(f'{ cover_name }.jpg'.strip()))
     if cover not in list(COVERS.keys()):
         COVERS[cover] = result['image']
     result['image'] = f'http://{FILESERVER_HOST}:{FILESERVER_PORT}' + cover
@@ -90,8 +98,6 @@ eel.init('web')
 def play_track(index):
     global INDEX
     INDEX = index
-    if mediaPlayer.isPlaying():
-        mediaPlayer.stop()
     path = TRACKS[index].get('path')
     if os.path.exists(path):
         mediaPlayer.setMedia(path)
@@ -174,10 +180,6 @@ def get_total_duration():
 @eel.expose
 def get_duration():
     duration = mediaPlayer.getTime()
-    print(mediaPlayer.getPosition())
-    if mediaPlayer.getPosition() == -1:
-        complete()
-        return 0
     duration = int(duration / 1000)
     return duration
 
@@ -208,6 +210,53 @@ def close_callback(route, websockets):
         kill_fileserver(FILESERVER_HOST, FILESERVER_PORT)
         FILESERVER.terminate()
         exit()
+
+
+def onMediaPlayerTimeChangedCallback():
+    duration = int(mediaPlayer.getTime() / 1000)
+    if duration == -1:
+        return
+    eel.update_seekbar(duration)
+    return
+
+
+def onMediaStateChangedCallback():
+    state = mediaPlayer.getState()
+    if state.value == MediaState.Buffering.value:
+        return
+    elif state.value == MediaState.NothingSpecial.value:
+        return
+    elif state.value == MediaState.Opening.value:
+        return
+    elif state.value == MediaState.Playing.value:
+        eel.set_playPause(True)
+        return
+    elif state.value == MediaState.Paused.value:
+        eel.set_playPause(False)
+        return
+    elif state.value == MediaState.Stopped.value:
+        eel.set_playPause(False)
+        return
+    elif state.value == MediaState.Error.value:
+        return
+    else:
+        return
+
+
+def onMediaPlayerEndReachedCallback():
+    next_track()
+    sys.exit()
+    return
+
+def onMediaPlayerMediaChangedCallback():
+    eel.set_playing_metadata(get_playing_metadata())
+    return
+
+
+mediaPlayer.setOnMediaPlayerTimeChangedCallback(onMediaPlayerTimeChangedCallback)
+mediaPlayer.setOnMediaStateChangedCallback(onMediaStateChangedCallback)
+mediaPlayer.setOnMediaPlayerEndReachedCallback(onMediaPlayerEndReachedCallback)
+mediaPlayer.setOnMediaPlayerMediaChangedCallback(onMediaPlayerMediaChangedCallback)
 
 
 eel.start(

@@ -147,5 +147,6 @@ if __name__ == '__main__':
     import json
 
     metadata = Metadata(
-        '/home/sidhu/Music/[MP3DOWNLOAD.TO] Sher Rann Vich Lalkaare Maarda (CHAMKAUR SAHIB JUNG) - Kam Lohgarh Ft. SOHI BROS-320k.mp3')
+        '/home/sidhu/Music/[MP3DOWNLOAD.TO] Sher Rann Vich Lalkaare Maarda (CHAMKAUR SAHIB JUNG) - Kam Lohgarh Ft. '
+        'SOHI BROS-320k.mp3')
     print(json.dumps(metadata.to_dict(), indent=4))
