@@ -77,7 +77,10 @@ for i, result in enumerate(results):
         vars.COVER_PATH, remove_invalid_chars(f'{ cover_name }.jpg'.strip()))
     if cover not in list(COVERS.keys()):
         COVERS[cover] = result['image']
-    result['image'] = f'http://{FILESERVER_HOST}:{FILESERVER_PORT}' + cover
+    if result['image'] is not None:
+        result['image'] = f'http://{FILESERVER_HOST}:{FILESERVER_PORT}' + cover
+    else:
+        result['image'] = None
     TRACKS.append(result)
 
 with ThreadPoolExecutor() as executor:
@@ -104,10 +107,6 @@ def play_track(index):
     if os.path.exists(path):
         mediaPlayer.setMedia(path)
         mediaPlayer.play()
-        # noinspection PyUnresolvedReferences
-        eel.set_playPause()
-        # noinspection PyUnresolvedReferences
-        eel.set_playing_metadata(get_playing_metadata())
         return True
     else:
         return False

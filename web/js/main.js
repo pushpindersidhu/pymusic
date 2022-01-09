@@ -2,6 +2,7 @@ const tracks_table = document.getElementById('tracks-table');
 const tracks_container = document.getElementById('tracks-table-container');
 const albums_container = document.getElementById('albums-container');
 const playing_albumart = document.getElementById('playing-albumart');
+const playing_albumart_svg = document.getElementById('playing-albumart-svg');
 const playing_title = document.getElementById('playing-title');
 const playing_artist = document.getElementById('playing-artist');
 const btn_play_pause = document.getElementById('btn-play-pause');
@@ -173,10 +174,18 @@ for (let i = 0; i < tracks_list.length; i++) {
 eel.expose(set_playing_metadata);
 
 function set_playing_metadata(data) {
-    playing_albumart.setAttribute(
-        'src', data.image
-    );
-    document.documentElement.style.backgroundImage = `url('${ data.image }')`;
+    if (data.image != null) {
+        playing_albumart.style.display = "block";
+        playing_albumart_svg.style.display = "none";
+        playing_albumart.setAttribute(
+            'src', data.image
+        );
+        document.documentElement.style.backgroundImage = `url('${data.image}')`;
+    } else {
+        playing_albumart.style.display = "none";
+        playing_albumart_svg.style.display = "block";
+        document.documentElement.style.background = style.getPropertyValue('--html-background-gradient');
+    }
     playing_artist.textContent = data.artist;
     playing_title.textContent = data.title;
     playing_time_total.textContent = duration_to_str(data.duration);
