@@ -181,6 +181,7 @@ function set_playing_metadata(data) {
             'src', data.image
         );
         document.documentElement.style.backgroundImage = `url('${data.image}')`;
+        document.documentElement.style.backgroundSize = 'cover';
     } else {
         playing_albumart.style.display = "none";
         playing_albumart_svg.style.display = "block";

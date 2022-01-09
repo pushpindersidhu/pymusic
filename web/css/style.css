@@ -21,8 +21,8 @@
   --cover-background-color: rgba(255, 255, 255, 0.025);
   --cover-svg-color: rgba(255, 255, 255, 0.25);
 
-  --seekbar-track-background-color: rgba(255, 255, 255, 0.075);
-  --seekbar-track-color: rgba(255, 255, 255, 0.25);
+  --seekbar-track-background-color: rgba(255, 255, 255, 0.125);
+  --seekbar-track-color: rgba(255, 255, 255, 0.5);
   --seekbar-track-hover-color: var(--accent-color);
   --seekbar-thumb-color: var(--accent-color);
 
