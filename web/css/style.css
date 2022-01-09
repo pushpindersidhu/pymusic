@@ -78,8 +78,13 @@
   --secondary-font-size: 13px;
   --secondary-font-weight: 550;
 
-  --html-background-gradient: linear-gradient(to bottom, #0f2027, #203a43, #2c5364) no-repeat
-  center center fixed;
+  --html-background-gradient: linear-gradient(
+      to bottom,
+      #0f2027,
+      #203a43,
+      #2c5364
+    )
+    no-repeat center center fixed;
   --background-blur: 25px;
 }
 
@@ -509,6 +514,111 @@ th:last-child {
 
 .albums-container-item:hover .albums-container-item-dots {
   display: none;
+}
+
+#album-details-container {
+  width: 100%;
+  height: 100%;
+}
+
+.album-details-albumart-container {
+  margin: 25px 0;
+}
+
+.album-details-album-meta {
+  margin: 0 25px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
+.album-details-albumart {
+  width: 225px;
+  height: 225px;
+  object-fit: cover;
+  object-position: center;
+  background-color: var(--cover-background-color);
+  border-radius: 5px;
+}
+
+.album-details-albumart-svg {
+  display: block;
+  padding: 25%;
+  stroke: var(--cover-svg-color);
+}
+
+.album-details-text {
+  margin: 0 25px;
+}
+
+.album-details-album {
+  font-size: 24px;
+  padding: 4px;
+  font-weight: 900;
+}
+
+.album-details-artist {
+  font-size: 18px;
+  font-weight: 800;
+  padding: 4px;
+}
+
+.album-details-year {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 4px;
+}
+
+.bull {
+  font-size: 14px;
+  color: #ffffff86;
+}
+
+.album-details-track-total {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 4px;
+}
+
+#album-details-track-list {
+  margin: 25px;
+}
+
+.album-details-track-item {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 5px;
+}
+
+.album-details-track-item:hover {
+  background-color: var(--container-item-hover-background);
+}
+
+.album-details-track-item-left {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.album-details-track-item-number {
+  text-align: end;
+  margin: 0 16px;
+  font-size: 14px;
+  font-weight: 525;
+}
+
+.album-details-track-item-title {
+  margin: 0 16px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.album-details-track-item-duration {
+  margin: 0 16px;
+  font-size: 14px;
+  font-weight: 525;
 }
 
 footer {

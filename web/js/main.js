@@ -1,3 +1,4 @@
+const container = document.getElementById('container')
 const tracks_table = document.getElementById('tracks-table');
 const tracks_container = document.getElementById('tracks-table-container');
 const albums_container = document.getElementById('albums-container');
@@ -168,6 +169,16 @@ for (let i = 0; i < tracks_list.length; i++) {
     const track = tracks_list[i];
     track.addEventListener("click", function (e) {
         eel.play_track(parseInt(this.getElementsByClassName('tracks-table-row-id')[0].textContent) - 1);
+    });
+}
+
+const albums_list = active_container.getElementsByClassName('albums-container-item');
+for (let i = 0; i < albums_list.length; i++) {
+    const album = albums_list[i];
+    album.addEventListener("click", function (e) {
+        eel.set_album_content(this.getElementsByClassName('albums-container-item-album')[0].textContent)((content) => {
+            container.innerHTML = content;
+        });
     });
 }
 
