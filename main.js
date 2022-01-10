@@ -9,8 +9,8 @@ let mainWindow
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 960,
-    height: 540,
+    width: 800,
+    height: 600,
     icon: path.join(__dirname, '/icon.png'),
     webPreferences: {
         show: false,
@@ -18,6 +18,8 @@ function createWindow () {
         contextIsolation: false,
       }
   })
+
+  mainWindow.maximize();
 
   mainWindow.setMenu(null);
 

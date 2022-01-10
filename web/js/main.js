@@ -72,8 +72,10 @@ for (let i = 0; i < nav_items.length; i++) {
 
 document.onkeypress = (e) => {
     if (e.code === 'Space') {
-        e.preventDefault();
-        eel.play_pause();
+        if (document.activeElement.id != 'search') {
+            e.preventDefault();
+            eel.play_pause();
+        }
     }
 }
 
@@ -242,6 +244,30 @@ function visualizer() {
 }
 
 
+function searchTrack() {
+    var input, filter, list, li, a, b, c, i, aValue, bValue, cValue;
+    input = document.getElementById('search');
+    filter = input.value.toUpperCase();
+    list = document.getElementById("tracks-table");
+    li = list.getElementsByClassName('tracks-table-row');
+
+    for (i = 0; i < li.length; i++) {
+        a = li[i].getElementsByClassName("tracks-table-row-title")[0];
+        b = li[i].getElementsByClassName("tracks-table-row-artist")[0];
+        c = li[i].getElementsByClassName("tracks-table-row-album")[0];
+        aValue = a.textContent || a.innerText;
+        bValue = b.textContent || b.innerText;
+        cValue = c.textContent || c.innerText;
+
+        if ((aValue.toUpperCase().indexOf(filter) > -1) ||
+            (bValue.toUpperCase().indexOf(filter) > -1) ||
+            (cValue.toUpperCase().indexOf(filter) > -1)) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}
 
 
 

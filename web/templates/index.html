@@ -34,7 +34,7 @@
                 <circle cx="10" cy="10" r="7" />
                 <line x1="21" y1="21" x2="15" y2="15" />
             </svg>
-            <input type="search" name="search" placeholder="Search" id="search">
+            <input type="search" name="search" onkeyup="searchTrack()" placeholder="Type here to Search..." id="search">
         </div>
         <svg xmlns="http://www.w3.org/2000/svg" id="settings" class="icon icon-tabler icon-tabler-settings" width="24"
             height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round"
@@ -68,7 +68,7 @@
                 </svg>
                 Search
             </div> -->
-            <!-- <p class="nav-text">LIBRARY</p> -->
+            <div class="nav-text">Library</div>
             <div id="nav-tracks" class="nav-item">
                 <span class=""></span>
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-music" width="24"
@@ -80,7 +80,7 @@
                     <polyline points="9 17 9 4 19 4 19 17" />
                     <line x1="9" y1="8" x2="19" y2="8" />
                 </svg>
-                Tracks
+                <div class="nav-item-text">Tracks</div>
             </div>
 
             <div id="nav-albums" class="nav-item selected-nav-item">
@@ -94,7 +94,7 @@
                     <path d="M7 12a5 5 0 0 1 5 -5" />
                     <path d="M12 17a5 5 0 0 0 5 -5" />
                 </svg>
-                Albums
+                <div class="nav-item-text">Albums</div>
             </div>
             <div id="nav-artists" class="nav-item">
                 <span class=""></span>
@@ -105,7 +105,7 @@
                     <path d="M15.002 12.9a5 5 0 1 0 -3.902 -3.9" />
                     <path d="M15.002 12.9l-3.902 -3.899l-7.513 8.584a2 2 0 1 0 2.827 2.83l8.588 -7.515z" />
                 </svg>
-                Artists
+                <div class="nav-item-text">Artists</div>
             </div>
 
             <div class="nav-item">
@@ -116,7 +116,7 @@
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                     <path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
                 </svg>
-                Favourites
+                <div class="nav-item-text">Favourites</div>
             </div>
 
         </div>
