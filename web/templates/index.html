@@ -19,9 +19,9 @@
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                 <polyline points="15 6 9 12 15 18" />
             </svg>
-            <svg xmlns="http://www.w3.org/2000/svg" id="forward" class="icon icon-tabler icon-tabler-chevron-right" width="24"
-                height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round"
-                stroke-linejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" id="forward" class="icon icon-tabler icon-tabler-chevron-right"
+                width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none"
+                stroke-linecap="round" stroke-linejoin="round">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                 <polyline points="9 6 15 12 9 18" />
             </svg>
@@ -48,12 +48,16 @@
     <main>
         <div id="nav">
             <div class="sidhu">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-coin" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                    <circle cx="12" cy="12" r="9" />
-                    <path d="M14.8 9a2 2 0 0 0 -1.8 -1h-2a2 2 0 0 0 0 4h2a2 2 0 0 1 0 4h-2a2 2 0 0 1 -1.8 -1" />
-                    <path d="M12 6v2m0 8v2" />
-                  </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hand-middle-finger"
+                    width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M8 13v-2.5a1.5 1.5 0 0 1 3 0v1.5" />
+                    <path d="M14 10.5a1.5 1.5 0 0 1 3 0v1.5" />
+                    <path
+                        d="M17 11.5a1.5 1.5 0 0 1 3 0v4.5a6 6 0 0 1 -6 6h-2h.208a6 6 0 0 1 -5.012 -2.7a69.74 69.74 0 0 1 -.196 -.3c-.312 -.479 -1.407 -2.388 -3.286 -5.728a1.5 1.5 0 0 1 .536 -2.022a1.867 1.867 0 0 1 2.28 .28l1.47 1.47" />
+                    <path d="M11 11.5v-8a1.5 1.5 0 1 1 3 0v8.5" />
+                </svg>
                 <p>Sidhu</p>
             </div>
 
@@ -212,7 +216,16 @@
             </div>
             <div id="controls">
                 <div id="player-btns">
-                    <svg role="img" height="16" width="16" id="btn-shuffle" viewBox="0 0 16 16">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" stroke="#fff" id="btn-shuffle" viewBox="0 0 512 512">
+                        <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"
+                            d="M400 304l48 48-48 48M400 112l48 48-48 48M64 352h85.19a80 80 0 0066.56-35.62L256 256" />
+                        <path
+                            d="M64 160h85.19a80 80 0 0166.56 35.62l80.5 120.76A80 80 0 00362.81 352H416M416 160h-53.19a80 80 0 00-66.56 35.62L288 208"
+                            fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" />
+                    </svg>
+
+                    <svg height="16" width="16" id="btn-shuffle" viewBox="0 0 16 16">
                         <path
                             d="M4.5 6.8l.7-.8C4.1 4.7 2.5 4 .9 4v1c1.3 0 2.6.6 3.5 1.6l.1.2zm7.5 4.7c-1.2 0-2.3-.5-3.2-1.3l-.6.8c1 1 2.4 1.5 3.8 1.5V14l3.5-2-3.5-2v1.5zm0-6V7l3.5-2L12 3v1.5c-1.6 0-3.2.7-4.2 2l-3.4 3.9c-.9 1-2.2 1.6-3.5 1.6v1c1.6 0 3.2-.7 4.2-2l3.4-3.9c.9-1 2.2-1.6 3.5-1.6z">
                         </path>
@@ -221,8 +234,8 @@
                     <img id="btn-previous" src="../icons/previous.svg" alt="">
                     <img id="btn-play-pause" src="../icons/play.svg" alt="">
                     <img id="btn-next" src="../icons/next.svg" alt="">
-
-                    <svg role="img" height="16" id="btn-repeat" width="16" viewBox="0 0 16 16"
+                    
+                    <svg height="16" id="btn-repeat" width="16" viewBox="0 0 16 16"
                         class="Svg-sc-1bi12j5-0 hDgDGI">
                         <path
                             d="M5.5 5H10v1.5l3.5-2-3.5-2V4H5.5C3 4 1 6 1 8.5c0 .6.1 1.2.4 1.8l.9-.5C2.1 9.4 2 9 2 8.5 2 6.6 3.6 5 5.5 5zm9.1 1.7l-.9.5c.2.4.3.8.3 1.3 0 1.9-1.6 3.5-3.5 3.5H6v-1.5l-3.5 2 3.5 2V13h4.5C13 13 15 11 15 8.5c0-.6-.1-1.2-.4-1.8z">

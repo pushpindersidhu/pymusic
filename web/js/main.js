@@ -245,16 +245,16 @@ function visualizer() {
 
 
 function searchTrack() {
-    var input, filter, list, li, a, b, c, i, aValue, bValue, cValue;
+    var input, filter, list, items, a, b, c, i, aValue, bValue, cValue;
     input = document.getElementById('search');
     filter = input.value.toUpperCase();
     list = document.getElementById("tracks-table");
-    li = list.getElementsByClassName('tracks-table-row');
+    items = list.getElementsByClassName('tracks-table-row');
 
-    for (i = 0; i < li.length; i++) {
-        a = li[i].getElementsByClassName("tracks-table-row-title")[0];
-        b = li[i].getElementsByClassName("tracks-table-row-artist")[0];
-        c = li[i].getElementsByClassName("tracks-table-row-album")[0];
+    for (i = 0; i < items.length; i++) {
+        a = items[i].getElementsByClassName("tracks-table-row-title")[0];
+        b = items[i].getElementsByClassName("tracks-table-row-artist")[0];
+        c = items[i].getElementsByClassName("tracks-table-row-album")[0];
         aValue = a.textContent || a.innerText;
         bValue = b.textContent || b.innerText;
         cValue = c.textContent || c.innerText;
@@ -262,13 +262,30 @@ function searchTrack() {
         if ((aValue.toUpperCase().indexOf(filter) > -1) ||
             (bValue.toUpperCase().indexOf(filter) > -1) ||
             (cValue.toUpperCase().indexOf(filter) > -1)) {
-            li[i].style.display = "";
+            items[i].style.display = "";
         } else {
-            li[i].style.display = "none";
+            items[i].style.display = "none";
         }
     }
 }
 
+
+const reorder = () => {
+    const frag = document.createDocumentFragment();
+    const list = document.getElementById("tracks-table");
+    const items = list.getElementsByClassName('tracks-table-row');
+    const sortedList = [...items].sort((a, b) => {
+        const c = a.getElementsByClassName("tracks-table-row-album")[0].textContent,
+            d = b.getElementsByClassName("tracks-table-row-album")[0].textContent;
+        return c < d ? -1 : c > d ? 1 : 0;
+    });
+    for (const item of sortedList) {
+        frag.appendChild(item);
+    }
+    list.appendChild(frag);
+}
+
+reorder();
 
 
 

@@ -492,7 +492,7 @@ th:last-child {
 #albums-container {
   display: grid;
   max-width: 100%;
-  margin: 24px;
+  margin: 0px 8px;
   display: grid;
   grid-gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
