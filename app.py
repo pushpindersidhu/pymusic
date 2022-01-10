@@ -17,7 +17,7 @@ from port_availability import port_availability
 from kill_fileserver import kill_fileserver
 from playback_status import PlaybackStatus
 from mediaplayer_state import MediaState
-from engine import generate_album_template
+from htmlengine import HtmlEngine
 
 
 START = time.perf_counter()
@@ -205,8 +205,9 @@ def data_path():
 
 @eel.expose
 def set_album_content(album):
-    album_data = LIBRARY.get_album_by_name(album)
-    return generate_album_template(album_data)
+    pass
+    # album_data = LIBRARY.get_album_by_name(album)
+    # return generate_album_template(album_data)
 
 
 FILESERVER = multiprocessing.Process(target=start_fileserver, args=(FILESERVER_HOST, FILESERVER_PORT,))
