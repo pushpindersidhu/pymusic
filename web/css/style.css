@@ -33,7 +33,7 @@
   /* #1DB954 */
 
   --nav-width: 250px;
-  --top-bar-height: 0px;
+  --top-bar-height: 60px;
   --player-height: 80px;
 
   --nav-item-text-color: rgba(255, 255, 255, 0.5);
@@ -131,6 +131,25 @@ body {
   backdrop-filter: blur(var(--background-blur));
 }
 
+.header{
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 0%;
+  left: var(--nav-width);
+  right: 0%;
+  height: var(--top-bar-height);
+  justify-content: space-between;
+  padding: 25px;
+}
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  -webkit-appearance:none;
+}
+
 #nav {
   position: absolute;
   top: 0px;
@@ -140,6 +159,72 @@ body {
   padding: 16px 0px;
   display: flex;
   flex-direction: column;
+}
+
+.back-forward {
+  display: flex;
+  align-items: center;
+}
+
+#back {
+  width: 32px;
+  height: 32px;
+  padding: 4px;
+  display: block;
+  /* background-color: rgba(255, 255, 255, 0.1); */
+  border-radius: 50%;
+  stroke: var(--nav-item-icon-color);
+}
+
+#back:hover, #forward:hover, #settings:hover{
+  cursor: pointer;
+  stroke: var(--nav-item-text-hover-color);
+}
+
+#forward {
+  width: 32px;
+  height: 32px;
+  padding: 4px;
+  display: block;
+  /* background-color: rgba(255, 255, 255, 0.1); */
+  border-radius: 50%;
+  stroke: var(--nav-item-icon-color);
+}
+
+.search-container {
+  margin: 0 12.5%;
+  position: relative;
+  flex-grow: 50;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#search-icon {
+  width: 24px;
+  height: 24px;
+  padding: 2px;
+  display: block;
+  position: absolute;
+  left: 16px;
+  stroke: var(--nav-item-icon-color);
+}
+
+#search {
+  font-size: 13px;
+  color: var(--nav-item-text-color);
+  border: solid 1px;
+  border-color: var(--divider-color);
+  border-radius: 25px;
+  outline: none;
+  padding: 12px 48px;
+  background-color: rgba(255, 255, 255, 0);
+  width: 100%;
+  display: block;
+}
+
+#settings {
+  stroke: var(--nav-item-icon-color);
 }
 
 .sidhu {

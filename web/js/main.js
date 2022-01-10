@@ -177,7 +177,7 @@ for (let i = 0; i < albums_list.length; i++) {
     const album = albums_list[i];
     album.addEventListener("click", function (e) {
         eel.set_album_content(this.getElementsByClassName('albums-container-item-album')[0].textContent)((content) => {
-            container.innerHTML = content;
+            // container.innerHTML = content;
         });
     });
 }
