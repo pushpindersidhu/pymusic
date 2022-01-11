@@ -2,7 +2,7 @@ import os
 
 SUPPORTED_EXTENSIONS = ['.mp3', '.m4a', '.flac']
 
-DIRS = ['/home/sidhu/Music']
+DIRS = ['/home/sidhu/Music/music']
 
 LIBRARY_PATH = '/home/sidhu/Music/Library'
 

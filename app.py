@@ -1,7 +1,9 @@
 import sys
 import eel
-import threading
 import vars
+import threading
+from musicqueue import MusicQueue
+from repeat import RepeatState
 import os
 import eel.browsers
 import time
@@ -31,6 +33,8 @@ PORT = 5911
 FILESERVER_HOST = '127.0.0.1'
 FILESERVER_PORT = 1984
 INVALID_CHARACTERS = '/\\:*?"<>|'
+repeat = RepeatState.RepeatNone
+music_queue = MusicQueue()
 
 eel.browsers.set_path('electron', 'node_modules/electron/dist/electron')
 
@@ -253,7 +257,12 @@ def onMediaStateChangedCallback():
 
 
 def onMediaPlayerEndReachedCallback():
-    next_track()
+    if repeat == RepeatState.RepeatNone:
+        next_track()
+    elif repeat == RepeatState.RepeatAll:
+        next_track()
+    elif repeat == RepeatState.RepeatOne:
+        play_track(INDEX)
     sys.exit()
     return
 
