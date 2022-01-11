@@ -806,7 +806,8 @@ footer {
 }
 
 #btn-shuffle {
-  fill: var(--player-secondary-icon-color);
+  fill: var(--player-primary-icon-color);
+  /* fill: var(--player-secondary-icon-color); */
   margin: 0 4px;
   padding: 8px;
   width: 32px;
@@ -814,12 +815,13 @@ footer {
 }
 
 #btn-shuffle:hover {
-  fill: var(--player-primary-icon-color);
+  /* fill: var(--player-primary-icon-color); */
   cursor: pointer;
 }
 
 #btn-previous {
-  fill: var(--player-secondary-icon-color);
+  fill: var(--player-primary-icon-color);
+  /* fill: var(--player-secondary-icon-color); */
   margin: 0 4px;
   padding: 4px 8px;
   width: 40px;
@@ -827,12 +829,12 @@ footer {
 }
 
 #btn-previous:hover {
-  fill: var(--player-primary-icon-color);
+  /* fill: var(--player-primary-icon-color); */
   cursor: pointer;
 }
 
 #btn-play-pause {
-  fill: var(--player-secondary-icon-color);
+  /* fill: var(--player-secondary-icon-color); */
   margin: 0 8px;
   width: 32px;
   height: 32px;
@@ -840,13 +842,13 @@ footer {
 }
 
 #btn-play-pause:hover {
-  fill: var(--player-primary-icon-color);
+  /* fill: var(--player-primary-icon-color); */
   cursor: pointer;
   transform: scale(1.1);
 }
 
 #btn-next {
-  fill: var(--player-secondary-icon-color);
+  /* fill: var(--player-secondary-icon-color); */
   margin: 0 4px;
   padding: 4px 8px;
   width: 40px;
@@ -854,12 +856,13 @@ footer {
 }
 
 #btn-next:hover {
-  fill: var(--player-primary-icon-color);
+  /* fill: var(--player-primary-icon-color); */
   cursor: pointer;
 }
 
 #btn-repeat {
-  fill: var(--player-secondary-icon-color);
+  fill: var(--player-primary-icon-color);
+  /* fill: var(--player-secondary-icon-color); */
   margin: 0 4px;
   padding: 8px;
   width: 32px;
@@ -867,7 +870,7 @@ footer {
 }
 
 #btn-repeat:hover {
-  fill: var(--player-primary-icon-color);
+  /* fill: var(--player-primary-icon-color); */
   cursor: pointer;
 }
 

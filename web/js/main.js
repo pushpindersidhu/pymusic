@@ -9,6 +9,8 @@ const playing_artist = document.getElementById('playing-artist');
 const btn_play_pause = document.getElementById('btn-play-pause');
 const btn_next = document.getElementById('btn-next');
 const btn_previous = document.getElementById('btn-previous');
+const btn_shuffle = document.getElementById('btn-shuffle');
+const btn_repeat = document.getElementById('btn-repeat');
 const volume_slider = document.getElementById("volume-slider");
 const seekbar = document.getElementById("seekbar");
 const playing_time_total = document.getElementById('playing-time-total');
@@ -24,7 +26,7 @@ var seekbar_track_color = style.getPropertyValue('--seekbar-track-color');
 var seekbar_track_bg_color = style.getPropertyValue('--seekbar-track-background-color');
 var volume_track_color = style.getPropertyValue('--seekbar-track-color');
 var volume_track_bg_color = style.getPropertyValue('--seekbar-track-background-color');
-
+var accent_color = style.getPropertyValue('--accent-color');
 
 var selected_nav;
 var active_container = albums_container;
@@ -287,7 +289,50 @@ const reorder = () => {
 
 reorder();
 
+var repeat = 0;
 
+const repeat_all_none = btn_repeat.getElementsByClassName('repeat-all-none')[0];
+const repeat_one = btn_repeat.getElementsByClassName('repeat-one')[0];
+const repeat_icon_color = style.getPropertyValue('--player-secondary-icon-color');
+
+eel.get_repeat_state()((repeat) => {
+    set_repeat(repeat);
+});
+
+btn_repeat.addEventListener('click', function (e) {
+
+    if (repeat == 2) {
+        repeat = 0
+    } else {
+        repeat++;
+    }
+
+    set_repeat(repeat);
+    eel.set_repeat_state(repeat);
+});
+
+function set_repeat(repeat) {
+    switch (repeat) {
+        case 0:
+            repeat_all_none.style.display = "block"
+            btn_repeat.style.fill = repeat_icon_color;
+            repeat_one.style.display = "none";
+            break;
+
+        case 1:
+            btn_repeat.style.fill = accent_color;
+            break;
+
+        case 2:
+            btn_repeat.style.fill = accent_color;
+            repeat_all_none.style.display = "none";
+            repeat_one.style.display = "block";
+            break;
+
+        default:
+            break;
+    }
+}
 
 
 

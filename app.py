@@ -213,6 +213,15 @@ def set_album_content(album):
     # album_data = LIBRARY.get_album_by_name(album)
     # return generate_album_template(album_data)
 
+@eel.expose
+def set_repeat_state(state):
+    global repeat
+    repeat = RepeatState(state)
+
+@eel.expose
+def get_repeat_state():
+    return repeat.value
+
 
 FILESERVER = multiprocessing.Process(target=start_fileserver, args=(FILESERVER_HOST, FILESERVER_PORT,))
 FILESERVER.start()
