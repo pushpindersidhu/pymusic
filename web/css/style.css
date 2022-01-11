@@ -131,6 +131,13 @@ body {
   backdrop-filter: blur(var(--background-blur));
 }
 
+::selection {
+  background: rgba(255, 255, 255, 0.1);
+}
+::-moz-selection {
+  background: rgba(255, 255, 255, 0.1);
+}
+
 .header{
   display: flex;
   align-items: center;

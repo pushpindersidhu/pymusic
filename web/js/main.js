@@ -18,6 +18,7 @@ const playing_time_elapsed = document.getElementById('playing-time-elapsed');
 const nav = document.getElementById('nav');
 const nav_tracks = document.getElementById('nav-tracks');
 const nav_albums = document.getElementById('nav-albums');
+const search_input = document.getElementById('search');
 const style = getComputedStyle(document.body);
 
 document.addEventListener('contextmenu', event => event.preventDefault());
@@ -180,9 +181,13 @@ const albums_list = active_container.getElementsByClassName('albums-container-it
 for (let i = 0; i < albums_list.length; i++) {
     const album = albums_list[i];
     album.addEventListener("click", function (e) {
-        eel.set_album_content(this.getElementsByClassName('albums-container-item-album')[0].textContent)((content) => {
-            // container.innerHTML = content;
-        });
+        let album_name = this.getElementsByClassName('albums-container-item-album')[0].textContent;
+        search_input.value = `$album:${ album_name }`;
+        nav_tracks.click();
+        search_input.dispatchEvent(new Event('keyup'));
+        // eel.set_album_content(this.getElementsByClassName('albums-container-item-album')[0].textContent)((content) => {
+        //     // container.innerHTML = content;
+        // });
     });
 }
 
@@ -247,9 +252,16 @@ function visualizer() {
 
 
 function searchTrack() {
-    var input, filter, list, items, a, b, c, i, aValue, bValue, cValue;
+    var input, filter, filter_by, list, items, a, b, c, i, aValue, bValue, cValue;
     input = document.getElementById('search');
-    filter = input.value.toUpperCase();
+    filter = input.value;
+    filter_by = [];
+    if (filter.indexOf("$album:") > -1) {
+        filter = filter.slice(7);
+        console.log(filter);
+        filter_by.push('album');
+    }
+    filter = filter.toUpperCase();
     list = document.getElementById("tracks-table");
     items = list.getElementsByClassName('tracks-table-row');
 
