@@ -547,28 +547,27 @@ th:last-child {
 
 .albums-container-item-btn-play {
   opacity: 0;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: var(--accent-color);
   width: 28px;
   height: 28px;
   display: block;
   border-radius: 50%;
   padding: 6px;
   margin: 0%;
-  fill: rgba(255, 255, 255, 0.5);
+  fill: rgb(255, 255, 255);
   position: absolute;
   bottom: 0px;
-  right: 8px;
-  transition: bottom 0.25s, opacity 0.25s;
+  right: 10px;
+  transition: bottom 0.25s, opacity 0.25s, transform 0.25s;
 }
 
 .albums-container-item:hover .albums-container-item-btn-play {
   opacity: 1;
-  bottom: 8px;
+  bottom: 10px;
 }
 
 .albums-container-item-btn-play:hover {
-  background-color: rgba(255, 255, 255, 0.5);
-  fill: rgba(0, 0, 0, 0.75);
+  transform: scale(1.1);
 }
 
 .albums-container-item-bottom {
@@ -777,43 +776,31 @@ th:last-child {
 
 .artists-container-item-btn-play {
   opacity: 0;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: var(--accent-color);
   width: 28px;
   height: 28px;
   display: block;
   border-radius: 50%;
   padding: 6px;
   margin: 0%;
-  fill: rgba(255, 255, 255, 0.5);
+  fill: rgb(255, 255, 255);
   position: absolute;
   bottom: 0px;
-  right: 8px;
-  transition: bottom 0.25s, opacity 0.25s;
+  right: 10px;
+  transition: bottom 0.25s, opacity 0.25s, transform 0.25s;
 }
 
 .artists-container-item:hover .artists-container-item-btn-play {
   opacity: 1;
-  bottom: 8px;
+  bottom: 10px;
 }
 
 .artists-container-item-btn-play:hover {
-  background-color: rgba(255, 255, 255, 0.5);
-  fill: rgba(0, 0, 0, 0.75);
+  transform: scale(1.1);
 }
 
 .artists-container-item-bottom {
   position: relative;
-}
-
-.artists-container-item-album {
-  width: 100%;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  padding: 16px 0px 2px 0px;
-  color: var(--album-primary-text-color);
-  font-size: var(--album-primary-font-size);
-  font-weight: var(--album-primary-font-weight);
 }
 
 .artists-container-item-artist {
@@ -821,35 +808,13 @@ th:last-child {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  color: var(--album-secondary-text-color);
-  font-size: var(--album-secondary-font-size);
-  font-weight: var(--album-secondary-font-weight);
-  padding: 2px 0px 0px 0px;
+  padding: 16px 0px 2px 0px;
+  text-align: center;
+  color: var(--album-primary-text-color);
+  font-size: var(--album-primary-font-size);
+  font-weight: var(--album-primary-font-weight);
 }
 
-.artists-container-item:hover .artists-container-item-artist,
-.artists-container-item:hover .artists-container-item-album {
-  width: calc(100% - 32px);
-}
-
-.artists-container-item-dots {
-  display: none;
-  position: absolute;
-  transform: translateY(-50%);
-  top: 50%;
-  right: 0px;
-  width: 24px;
-  height: 24px;
-  margin: 4px;
-  padding: 4px;
-  border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.75);
-  stroke: rgba(255, 255, 255, 0.5);
-}
-
-.artists-container-item:hover .artists-container-item-dots {
-  display: none;
-}
 
 footer {
   position: absolute;
