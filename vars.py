@@ -1,10 +1,25 @@
 import os
+import getpass
+from sys import platform
 
-SUPPORTED_EXTENSIONS = ['.mp3', '.m4a', '.flac']
+SUPPORTED_EXTENSIONS = ['.mp3', '.m4a', '.flac', '.alac', '.wav']
 
-DIRS = ['/home/sidhu/Music/music']
+user = getpass.getuser()
 
-LIBRARY_PATH = '/home/sidhu/Music/Library'
+if platform == "linux" or platform == "linux2":
+    # linux
+    DIRS = [f'/home/{ user }/Music']
+    LIBRARY_PATH = f'/home/{ user }/Music/Library'
+
+elif platform == "darwin":
+    # OS X
+    DIRS = [f'/home/{ user }/Desktop/web']
+    LIBRARY_PATH = f'/home/{ user }/Music/Library'
+
+elif platform == "win32":
+    # Windows
+    DIRS = [f'C:\\Users\\{ user }\\Music']
+    LIBRARY_PATH = f'C:\\Users\\{ user }\\Music\\Library'
 
 COVER_PATH = os.path.join(LIBRARY_PATH, 'Covers')
 

@@ -185,7 +185,7 @@ for (let i = 0; i < tracks_list.length; i++) {
     });
 }
 
-const albums_list = active_container.getElementsByClassName('albums-container-item');
+const albums_list = albums_container.getElementsByClassName('albums-container-item');
 for (let i = 0; i < albums_list.length; i++) {
     const album = albums_list[i];
     album.addEventListener("click", function (e) {
@@ -196,6 +196,17 @@ for (let i = 0; i < albums_list.length; i++) {
         // eel.set_album_content(this.getElementsByClassName('albums-container-item-album')[0].textContent)((content) => {
         //     // container.innerHTML = content;
         // });
+    });
+}
+
+const artists_list = artists_container.getElementsByClassName('artists-container-item');
+for (let i = 0; i < artists_list.length; i++) {
+    const artist = artists_list[i];
+    artist.addEventListener("click", function (e) {
+        let artist_name = this.getElementsByClassName('artists-container-item-artist')[0].textContent;
+        search_input.value = `$artist:${ artist_name }`;
+        nav_tracks.click();
+        search_input.dispatchEvent(new Event('keyup'));
     });
 }
 
@@ -266,8 +277,11 @@ function searchTrack() {
     filter_by = [];
     if (filter.indexOf("$album:") > -1) {
         filter = filter.slice(7);
-        console.log(filter);
         filter_by.push('album');
+    }
+    if (filter.indexOf("$artist:") > -1) {
+        filter = filter.slice(8);
+        filter_by.push('artist');
     }
     filter = filter.toUpperCase();
     list = document.getElementById("tracks-table");

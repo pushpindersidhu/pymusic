@@ -2,6 +2,7 @@ import sys
 import eel
 import vars
 import threading
+import pickle
 from musicqueue import MusicQueue
 from repeat import RepeatState
 import os
@@ -95,6 +96,9 @@ del COVERS
 
 LIBRARY = Library(TRACKS)
 
+with open('/home/sidhu/Desktop/temp.pickle', 'wb') as f:
+    pickle.dump(LIBRARY, f)
+
 jinja_globals = {
     'title': 'Sidhu',
     'TRACKS': TRACKS,
@@ -108,6 +112,8 @@ eel.init('web')
 def play_track(index):
     global INDEX
     INDEX = index
+    if len(TRACKS) == 0:
+        return False
     path = TRACKS[index].get('path')
     if os.path.exists(path):
         mediaPlayer.setMedia(path)
