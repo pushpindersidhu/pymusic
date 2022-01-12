@@ -8,6 +8,7 @@ class Library:
     # library = [
     #     {
     #         'artist': 'Unknown Artist',
+    #         'artist_image': None,
     #         'albums': [
     #             {
     #                 'album': 'Unknown Album',
@@ -53,10 +54,11 @@ class Library:
 
         for track in tracks:
             album_artist = track.get('album_artist')
+            artist_image = track.get('image')
             album = track.get('album')
             if not self.artist_exists(album_artist):
                 self.artists.append(album_artist)
-                self.library.append(self.artist(album_artist))
+                self.library.append(self.artist(album_artist, artist_image=artist_image))
             if not self.album_exists(album):
                 self.albums.append(album)
                 self.library[self.get_artist_index(album_artist)].get('albums').append(self.album(
@@ -91,15 +93,17 @@ class Library:
             return -1
 
     @staticmethod
-    def artist(name, albums=None):
+    def artist(name, artist_image=None, albums=None):
         if albums is None:
             return {
                 'artist': name,
+                'artist_image': artist_image,
                 'albums': []
             }
         else:
             return {
                 'artist': name,
+                'artist_image': artist_image,
                 'albums': albums
             }
 
@@ -205,6 +209,16 @@ class Library:
 
     def get_all_artists(self):
         return self.library
+
+    def get_all_artists_info(self):
+        artists_info = []
+        for artist in self.library:
+            artist_info = {
+                'artist': artist['artist'],
+                'artist_image': artist['artist_image']
+            }
+            artists_info.append(artist_info)
+        return artists_info
 
     def __str__(self):
         return json.dumps(self.library, indent=4)

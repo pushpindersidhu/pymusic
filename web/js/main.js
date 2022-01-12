@@ -2,6 +2,7 @@ const container = document.getElementById('container')
 const tracks_table = document.getElementById('tracks-table');
 const tracks_container = document.getElementById('tracks-table-container');
 const albums_container = document.getElementById('albums-container');
+const artists_container = document.getElementById('artists-container');
 const playing_albumart = document.getElementById('playing-albumart');
 const playing_albumart_svg = document.getElementById('playing-albumart-svg');
 const playing_title = document.getElementById('playing-title');
@@ -61,6 +62,13 @@ for (let i = 0; i < nav_items.length; i++) {
                     active_container = albums_container;
                 }
                 break;
+
+            case "Artists":
+                if (active_container != artists_container) {
+                    active_container.classList.toggle('inactive-container');
+                    artists_container.classList.toggle('inactive-container');
+                    active_container = artists_container;
+                }
 
             default:
                 break;
