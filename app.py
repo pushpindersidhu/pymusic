@@ -299,6 +299,9 @@ eel.start(
     jinja_templates='templates',
     jinja_global=jinja_globals,
     block=True,
+    app_mode=True,
+    cmdline_args=['--disable-http-cache'],
+    shutdown_delay=1.0,
     close_callback=close_callback,
 )
 
