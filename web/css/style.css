@@ -12,9 +12,9 @@
   --secondary-icon-color: rgba(255, 255, 255, 0.5);
   --divider-color: rgb(255, 255, 255, 0.125);
 
-  --scrollbar-thumb-color: #101010;
+  --scrollbar-thumb-color: rgba(255, 255, 255, 0.5);
   --scrollbar-track-color: #12121200;
-  --scrollbar-thumb-hover-color: #202020;
+  --scrollbar-thumb-hover-color: rgba(255, 255, 255, 0.75);
 
   --container-item-hover-background: rgba(255, 255, 255, 0.05);
 

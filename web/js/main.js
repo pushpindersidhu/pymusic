@@ -129,7 +129,7 @@ for (let i = 0; i < nav_items.length; i++) {
 
             case "Favourites":
                 if (active_container != favourites_container) {
-                    search_input = null;
+                    search_input.value = null;
                     search_input.dispatchEvent(new Event('keyup'));
                     if (scroll_listener != null) {
                         container.removeEventListener('scroll', scroll_listener);
