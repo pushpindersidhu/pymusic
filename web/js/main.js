@@ -76,6 +76,7 @@ for (let i = 0; i < nav_items.length; i++) {
             case "Tracks":
                 if (active_container != tracks_container) {
                     search_input.value = null;
+                    search_input.dispatchEvent(new Event('keyup'));
                     if (scroll_listener != null) {
                         container.removeEventListener('scroll', scroll_listener);
                     };
@@ -91,8 +92,9 @@ for (let i = 0; i < nav_items.length; i++) {
                 break;
 
             case "Albums":
-                search_input.value = null;
                 if (active_container != albums_container) {
+                    search_input.value = null;
+                    search_input.dispatchEvent(new Event('keyup'));
                     if (scroll_listener != null) {
                         container.removeEventListener('scroll', scroll_listener);
                     };
@@ -108,8 +110,9 @@ for (let i = 0; i < nav_items.length; i++) {
                 break;
 
             case "Artists":
-                search_input.value = null;
                 if (active_container != artists_container) {
+                    search_input.value = null;
+                    search_input.dispatchEvent(new Event('keyup'));
                     if (scroll_listener != null) {
                         container.removeEventListener('scroll', scroll_listener);
                     };
@@ -125,8 +128,9 @@ for (let i = 0; i < nav_items.length; i++) {
                 break;
 
             case "Favourites":
-                search_input = null;
                 if (active_container != favourites_container) {
+                    search_input = null;
+                    search_input.dispatchEvent(new Event('keyup'));
                     if (scroll_listener != null) {
                         container.removeEventListener('scroll', scroll_listener);
                     };
