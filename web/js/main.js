@@ -41,19 +41,28 @@ btn_settings.addEventListener('click', function (e) {
         active_container.classList.toggle('inactive-container');
         settings_container.classList.toggle('inactive-container');
         active_container = settings_container;
+        btn_settings.classList.toggle('settings-active');
+        selected_nav.classList.toggle('selected-nav-item');
+        selected_nav.getElementsByTagName('span')[0].classList.toggle('selected-indicator');
+        selected_nav = null;
     }
 });
 
 const nav_items = nav.getElementsByClassName('nav-item');
-console.log(nav_items);
+
 for (let i = 0; i < nav_items.length; i++) {
     const nav_item = nav_items[i];
     nav_item.addEventListener('click', function (e) {
-        selected_nav.classList.remove('selected-nav-item');
-        selected_nav.getElementsByTagName('span')[0].classList.remove('selected-indicator');
-        this.classList.add('selected-nav-item');
-        this.getElementsByTagName('span')[0].classList.add('selected-indicator');
-        console.log(this.textContent.trim());
+        if (selected_nav != null) {
+            selected_nav.classList.toggle('selected-nav-item');
+            selected_nav.getElementsByTagName('span')[0].classList.toggle('selected-indicator');
+        }
+        selected_nav = this
+        this.classList.toggle('selected-nav-item');
+        this.getElementsByTagName('span')[0].classList.toggle('selected-indicator');
+        if (active_container == settings_container) {
+            btn_settings.classList.toggle('settings-active');
+        }
         switch (this.textContent.trim()) {
             case "Tracks":
                 if (active_container != tracks_container) {
@@ -210,9 +219,6 @@ for (let i = 0; i < albums_list.length; i++) {
         search_input.value = `$album:${album_name}&`;
         nav_tracks.click();
         search_input.dispatchEvent(new Event('keyup'));
-        // eel.set_album_content(this.getElementsByClassName('albums-container-item-album')[0].textContent)((content) => {
-        //     // container.innerHTML = content;
-        // });
     });
 }
 
