@@ -124,6 +124,13 @@
 
         </div>
         <div id="container">
+            <div id="settings-container" class="inactive-container">
+                <div class="settings-menu">
+                    <div id="general" class="settings-menu-item">
+                        Settings
+                    </div>
+                </div>
+            </div>
             <div id="artists-container" class="inactive-container">
                 {% for artist_info in LIBRARY.get_all_artists_info() %}
                 <div class="artists-container-item">

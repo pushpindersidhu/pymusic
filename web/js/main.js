@@ -3,6 +3,7 @@ const tracks_table = document.getElementById('tracks-table');
 const tracks_container = document.getElementById('tracks-table-container');
 const albums_container = document.getElementById('albums-container');
 const artists_container = document.getElementById('artists-container');
+const settings_container = document.getElementById('settings-container');
 const playing_albumart = document.getElementById('playing-albumart');
 const playing_albumart_svg = document.getElementById('playing-albumart-svg');
 const playing_title = document.getElementById('playing-title');
@@ -12,6 +13,7 @@ const btn_next = document.getElementById('btn-next');
 const btn_previous = document.getElementById('btn-previous');
 const btn_shuffle = document.getElementById('btn-shuffle');
 const btn_repeat = document.getElementById('btn-repeat');
+const btn_settings = document.getElementById('settings');
 const volume_slider = document.getElementById("volume-slider");
 const seekbar = document.getElementById("seekbar");
 const playing_time_total = document.getElementById('playing-time-total');
@@ -33,14 +35,19 @@ var accent_color = style.getPropertyValue('--accent-color');
 var selected_nav;
 var active_container = albums_container;
 
+btn_settings.addEventListener('click', function(e) {
+    if (active_container != settings_container) {
+        active_container.classList.toggle('inactive-container');
+        settings_container.classList.toggle('inactive-container');
+        active_container = settings_container;
+    }
+});
+
 const nav_items = nav.getElementsByClassName('nav-item');
 console.log(nav_items);
 for (let i = 0; i < nav_items.length; i++) {
     const nav_item = nav_items[i];
     nav_item.addEventListener('click', function (e) {
-        if (selected_nav == this) {
-            return;
-        }
         selected_nav.classList.remove('selected-nav-item');
         selected_nav.getElementsByTagName('span')[0].classList.remove('selected-indicator');
         this.classList.add('selected-nav-item');
