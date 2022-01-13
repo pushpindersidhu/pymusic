@@ -3,6 +3,7 @@ const tracks_table = document.getElementById('tracks-table');
 const tracks_container = document.getElementById('tracks-table-container');
 const albums_container = document.getElementById('albums-container');
 const artists_container = document.getElementById('artists-container');
+const favourites_container = document.getElementById('favourites-container');
 const settings_container = document.getElementById('settings-container');
 const playing_albumart = document.getElementById('playing-albumart');
 const playing_albumart_svg = document.getElementById('playing-albumart-svg');
@@ -35,7 +36,7 @@ var accent_color = style.getPropertyValue('--accent-color');
 var selected_nav;
 var active_container = albums_container;
 
-btn_settings.addEventListener('click', function(e) {
+btn_settings.addEventListener('click', function (e) {
     if (active_container != settings_container) {
         active_container.classList.toggle('inactive-container');
         settings_container.classList.toggle('inactive-container');
@@ -76,6 +77,15 @@ for (let i = 0; i < nav_items.length; i++) {
                     artists_container.classList.toggle('inactive-container');
                     active_container = artists_container;
                 }
+                break;
+
+            case "Favourites":
+                if (active_container != favourites_container) {
+                    active_container.classList.toggle('inactive-container');
+                    favourites_container.classList.toggle('inactive-container');
+                    active_container = favourites_container;
+                }
+                break;
 
             default:
                 break;
@@ -197,7 +207,7 @@ for (let i = 0; i < albums_list.length; i++) {
     const album = albums_list[i];
     album.addEventListener("click", function (e) {
         let album_name = this.getElementsByClassName('albums-container-item-album')[0].textContent;
-        search_input.value = `$album:${ album_name }`;
+        search_input.value = `$album:${album_name}&`;
         nav_tracks.click();
         search_input.dispatchEvent(new Event('keyup'));
         // eel.set_album_content(this.getElementsByClassName('albums-container-item-album')[0].textContent)((content) => {
@@ -211,8 +221,8 @@ for (let i = 0; i < artists_list.length; i++) {
     const artist = artists_list[i];
     artist.addEventListener("click", function (e) {
         let artist_name = this.getElementsByClassName('artists-container-item-artist')[0].textContent;
-        search_input.value = `$artist:${ artist_name }`;
-        nav_tracks.click();
+        search_input.value = `$artist:${artist_name}&`;
+        nav_albums.click();
         search_input.dispatchEvent(new Event('keyup'));
     });
 }
@@ -278,7 +288,7 @@ function visualizer() {
 
 
 function searchTrack() {
-    var input, filter, filter_by, list, items, a, b, c, i, aValue, bValue, cValue;
+    var input, filter, filter_by, list, items, title_element, artist_element, album_element, albums_items, album_view_album, album_view_artist;
     input = document.getElementById('search');
     filter = input.value;
     filter_by = [];
@@ -294,21 +304,38 @@ function searchTrack() {
     list = document.getElementById("tracks-table");
     items = list.getElementsByClassName('tracks-table-row');
 
-    for (i = 0; i < items.length; i++) {
-        a = items[i].getElementsByClassName("tracks-table-row-title")[0];
-        b = items[i].getElementsByClassName("tracks-table-row-artist")[0];
-        c = items[i].getElementsByClassName("tracks-table-row-album")[0];
-        aValue = a.textContent || a.innerText;
-        bValue = b.textContent || b.innerText;
-        cValue = c.textContent || c.innerText;
+    for (let i = 0; i < items.length; i++) {
+        title_element = items[i].getElementsByClassName("tracks-table-row-title")[0];
+        artist_element = items[i].getElementsByClassName("tracks-table-row-artist")[0];
+        album_element = items[i].getElementsByClassName("tracks-table-row-album")[0];
 
-        if ((aValue.toUpperCase().indexOf(filter) > -1) ||
-            (bValue.toUpperCase().indexOf(filter) > -1) ||
-            (cValue.toUpperCase().indexOf(filter) > -1)) {
+        let title = title_element.textContent || title_element.innerText;
+        let artist = artist_element.textContent || artist_element.innerText;
+        let album = album_element.textContent || album_element.innerText;
+
+        if ((title.toUpperCase().indexOf(filter) > -1) ||
+            (artist.toUpperCase().indexOf(filter) > -1) ||
+            (album.toUpperCase().indexOf(filter) > -1)) {
             items[i].style.display = "";
         } else {
             items[i].style.display = "none";
         }
+    }
+
+    for (let i = 0; i < albums_list.length; i++) {
+        const album = albums_list[i];
+
+        let album_name = album.getElementsByClassName(
+            'albums-container-item-album')[0].textContent;
+        let album_artist = album.getElementsByClassName(
+            'albums-container-item-artist')[0].textContent;
+
+        if ((album_name.toUpperCase().indexOf(filter) > -1) ||
+            (album_artist.toUpperCase().indexOf(filter) > -1)) {
+            album.style.display = "";
+        } else {
+            album.style.display = "none";
+        }        
     }
 }
 
