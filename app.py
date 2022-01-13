@@ -237,7 +237,7 @@ def close_callback(route, websockets):
     if not websockets:
         kill_fileserver(FILESERVER_HOST, FILESERVER_PORT)
         FILESERVER.terminate()
-        exit()
+        sys.exit()
 
 
 def onMediaPlayerTimeChangedCallback():
@@ -294,7 +294,7 @@ mediaPlayer.setOnMediaPlayerMediaChangedCallback(onMediaPlayerMediaChangedCallba
 
 eel.start(
     'templates/index.html',
-    mode='electron',
+    mode='chrome',
     port=PORT,
     jinja_templates='templates',
     jinja_global=jinja_globals,
