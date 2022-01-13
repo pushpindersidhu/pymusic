@@ -75,6 +75,7 @@ for (let i = 0; i < nav_items.length; i++) {
         switch (this.textContent.trim()) {
             case "Tracks":
                 if (active_container != tracks_container) {
+                    search_input.value = null;
                     if (scroll_listener != null) {
                         container.removeEventListener('scroll', scroll_listener);
                     };
@@ -90,6 +91,7 @@ for (let i = 0; i < nav_items.length; i++) {
                 break;
 
             case "Albums":
+                search_input.value = null;
                 if (active_container != albums_container) {
                     if (scroll_listener != null) {
                         container.removeEventListener('scroll', scroll_listener);
@@ -106,6 +108,7 @@ for (let i = 0; i < nav_items.length; i++) {
                 break;
 
             case "Artists":
+                search_input.value = null;
                 if (active_container != artists_container) {
                     if (scroll_listener != null) {
                         container.removeEventListener('scroll', scroll_listener);
@@ -122,6 +125,7 @@ for (let i = 0; i < nav_items.length; i++) {
                 break;
 
             case "Favourites":
+                search_input = null;
                 if (active_container != favourites_container) {
                     if (scroll_listener != null) {
                         container.removeEventListener('scroll', scroll_listener);
@@ -257,8 +261,8 @@ for (let i = 0; i < albums_list.length; i++) {
     const album = albums_list[i];
     album.addEventListener("click", function (e) {
         let album_name = this.getElementsByClassName('albums-container-item-album')[0].textContent;
-        search_input.value = `$album:${album_name}&`;
         nav_tracks.click();
+        search_input.value = `$album:${album_name}`;
         search_input.dispatchEvent(new Event('keyup'));
     });
 }
@@ -268,8 +272,8 @@ for (let i = 0; i < artists_list.length; i++) {
     const artist = artists_list[i];
     artist.addEventListener("click", function (e) {
         let artist_name = this.getElementsByClassName('artists-container-item-artist')[0].textContent;
-        search_input.value = `$artist:${artist_name}&`;
         nav_albums.click();
+        search_input.value = `$artist:${artist_name}`;
         search_input.dispatchEvent(new Event('keyup'));
     });
 }
