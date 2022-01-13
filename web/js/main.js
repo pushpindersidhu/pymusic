@@ -49,6 +49,15 @@ btn_settings.addEventListener('click', function (e) {
 });
 
 const nav_items = nav.getElementsByClassName('nav-item');
+var tracks_container_scroll = 0;
+var albums_container_scroll = 0;
+var artists_container_scroll = 0;
+var favourites_container_scroll = 0;
+var scroll_listener = null;
+var tracks_container_search_input = "";
+var albums_container_search_input = "";
+var artists_container_search_input = "";
+var favourites_container_search_input = "";
 
 for (let i = 0; i < nav_items.length; i++) {
     const nav_item = nav_items[i];
@@ -66,33 +75,65 @@ for (let i = 0; i < nav_items.length; i++) {
         switch (this.textContent.trim()) {
             case "Tracks":
                 if (active_container != tracks_container) {
+                    if (scroll_listener != null) {
+                        container.removeEventListener('scroll', scroll_listener);
+                    };
                     active_container.classList.toggle('inactive-container');
                     tracks_container.classList.toggle('inactive-container');
                     active_container = tracks_container;
+                    container.scrollTop = tracks_container_scroll;
+                    scroll_listener = function (e) {
+                        tracks_container_scroll = container.scrollTop;
+                    };
+                    container.addEventListener('scroll', scroll_listener);
                 }
                 break;
 
             case "Albums":
                 if (active_container != albums_container) {
+                    if (scroll_listener != null) {
+                        container.removeEventListener('scroll', scroll_listener);
+                    };
                     active_container.classList.toggle('inactive-container');
                     albums_container.classList.toggle('inactive-container');
                     active_container = albums_container;
+                    container.scrollTop = albums_container_scroll;
+                    scroll_listener = function (e) {
+                        albums_container_scroll = container.scrollTop;
+                    };
+                    container.addEventListener('scroll', scroll_listener);
                 }
                 break;
 
             case "Artists":
                 if (active_container != artists_container) {
+                    if (scroll_listener != null) {
+                        container.removeEventListener('scroll', scroll_listener);
+                    };
                     active_container.classList.toggle('inactive-container');
                     artists_container.classList.toggle('inactive-container');
                     active_container = artists_container;
+                    container.scrollTop = artists_container_scroll;
+                    scroll_listener = function (e) {
+                        artists_container_scroll = container.scrollTop;
+                    };
+                    container.addEventListener('scroll', scroll_listener);
                 }
                 break;
 
             case "Favourites":
                 if (active_container != favourites_container) {
+                    if (scroll_listener != null) {
+                        container.removeEventListener('scroll', scroll_listener);
+                    };
                     active_container.classList.toggle('inactive-container');
                     favourites_container.classList.toggle('inactive-container');
                     active_container = favourites_container;
+                    container.scrollTop = favourites_container_scroll;
+                    scroll_listener = function (e) {
+                        favourites_container_scroll = container.scrollTop;
+                    };
+                    container.addEventListener('scroll', scroll_listener);
                 }
                 break;
 
@@ -298,6 +339,7 @@ function searchTrack() {
     input = document.getElementById('search');
     filter = input.value;
     filter_by = [];
+
     if (filter.indexOf("$album:") > -1) {
         filter = filter.slice(7);
         filter_by.push('album');
@@ -341,7 +383,7 @@ function searchTrack() {
             album.style.display = "";
         } else {
             album.style.display = "none";
-        }        
+        }
     }
 }
 
@@ -367,7 +409,7 @@ var repeat = 0;
 
 const repeat_all_none = btn_repeat.getElementsByClassName('repeat-all-none')[0];
 const repeat_one = btn_repeat.getElementsByClassName('repeat-one')[0];
-const repeat_icon_color = style.getPropertyValue('--player-secondary-icon-color');
+const repeat_icon_color = style.getPropertyValue('--player-primary-icon-color');
 
 eel.get_repeat_state()((repeat) => {
     set_repeat(repeat);
