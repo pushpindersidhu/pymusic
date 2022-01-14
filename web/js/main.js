@@ -201,7 +201,7 @@ seekbar.oninput = function () {
     var duration = this.value;
     var value = (this.value - this.min) / (this.max - this.min) * 100;
     this.style.background = `linear-gradient(to right, ${seekbar_track_color} 0%, ${seekbar_track_color}  ${value}%, ${seekbar_track_bg_color} ${value}%, ${seekbar_track_bg_color} 100%)`;
-    playing_time_elapsed.textContent = duration_to_str(duration);
+    playing_time_elapsed.textContent = duration_to_str(duration - 1);
     eel.seek_to(value);
 };
 
