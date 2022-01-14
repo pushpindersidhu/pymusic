@@ -85,7 +85,7 @@
       #2c5364
     )
     no-repeat center center fixed;
-  --background-blur: 0px;
+  --background-blur: 10px;
 }
 
 * {
