@@ -46,32 +46,35 @@ class Library:
     #     }
     # ]
 
-    def __init__(self, tracks: list) -> None:
-        self.tracks = tracks
-        self.artists = []
-        self.albums = []
-        self.library = []
+    def __init__(self, tracks: list = None, library: list = None) -> None:
+        
+        if tracks is not None:
+            
+            self.tracks = tracks
+            self.artists = []
+            self.albums = []
+            self.library = []
 
-        for track in tracks:
-            album_artist = track.get('album_artist')
-            artist_image = track.get('image')
-            album = track.get('album')
-            if not self.artist_exists(album_artist):
-                self.artists.append(album_artist)
-                self.library.append(self.artist(album_artist, artist_image=artist_image))
-            if not self.album_exists(album):
-                self.albums.append(album)
-                self.library[self.get_artist_index(album_artist)].get('albums').append(self.album(
-                    album,
-                    track.get('album_artist'),
-                    track.get('image'),
-                    track.get('year'),
-                    track.get('track_total'),
-                    track.get('disc_total'),
-                ))
-            self.library[self.get_artist_index(album_artist)] \
-                .get('albums')[self.get_album_index(album, album_artist)] \
-                .get('tracks').append(track)
+            for track in tracks:
+                album_artist = track.get('album_artist')
+                artist_image = track.get('image')
+                album = track.get('album')
+                if not self.artist_exists(album_artist):
+                    self.artists.append(album_artist)
+                    self.library.append(self.artist(album_artist, artist_image=artist_image))
+                if not self.album_exists(album):
+                    self.albums.append(album)
+                    self.library[self.get_artist_index(album_artist)].get('albums').append(self.album(
+                        album,
+                        track.get('album_artist'),
+                        track.get('image'),
+                        track.get('year'),
+                        track.get('track_total'),
+                        track.get('disc_total'),
+                    ))
+                self.library[self.get_artist_index(album_artist)] \
+                    .get('albums')[self.get_album_index(album, album_artist)] \
+                    .get('tracks').append(track)
 
     def get_artist_index(self, artist):
         if artist in self.artists:

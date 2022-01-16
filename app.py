@@ -1,5 +1,6 @@
 import sys
 import eel
+from storage import StorageUtil
 import vars
 import threading
 import pickle
@@ -63,41 +64,53 @@ def duration_to_str(duration):
     secs = int(duration % 60)
     return ("0" if minutes < 10 else "") + str(minutes) + ":" + ("0" if secs < 10 else "") + str(secs)
 
+start = time.perf_counter()
+storage_util = StorageUtil()
+LIBRARY = storage_util.get_library()
 
-for directory in vars.DIRS:
-    TRACKS_PATH_LIST.extend(scan(directory))
+if LIBRARY is None:
 
-with ThreadPoolExecutor() as executor:
-    results = executor.map(lambda file: Metadata(
-        file, image=True).to_dict(), TRACKS_PATH_LIST)
+    for directory in vars.DIRS:
+        TRACKS_PATH_LIST.extend(scan(directory))
 
-COVERS = {}
+    with ThreadPoolExecutor() as executor:
+        results = executor.map(lambda file: Metadata(
+            file, image=True).to_dict(), TRACKS_PATH_LIST)
 
-for i, result in enumerate(results):
-    result['id'] = i + 1
-    result['formatted_duration'] = duration_to_str(result['duration'])
-    cover_name = result.get("album")
-    if cover_name == 'Unknown Album':
-        cover_name = result.get('title')
-    cover = os.path.join(
-        vars.COVER_PATH, remove_invalid_chars(f'{ cover_name }.jpg'.strip()))
-    if cover not in list(COVERS.keys()):
-        COVERS[cover] = result['image']
-    if result['image'] is not None:
-        result['image'] = f'http://{FILESERVER_HOST}:{FILESERVER_PORT}' + cover
-    else:
-        result['image'] = None
-    TRACKS.append(result)
+    COVERS = {}
 
-with ThreadPoolExecutor() as executor:
-    executor.map(save_album_art, list(COVERS.keys()), list(COVERS.values()))
+    for i, result in enumerate(results):
+        result['id'] = i + 1
+        result['formatted_duration'] = duration_to_str(result['duration'])
+        cover_name = result.get("album")
+        if cover_name == 'Unknown Album':
+            cover_name = result.get('title')
+        cover = os.path.join(
+            vars.COVER_PATH, remove_invalid_chars(f'{ cover_name }.jpg'.strip()))
+        if cover not in list(COVERS.keys()):
+            COVERS[cover] = result['image']
+        if result['image'] is not None:
+            result['image'] = f'http://{FILESERVER_HOST}:{FILESERVER_PORT}' + cover
+        else:
+            result['image'] = None
+        TRACKS.append(result)
+        
+    print(COVERS.keys())
 
-del COVERS
+    with ThreadPoolExecutor() as executor:
+        executor.map(save_album_art, list(COVERS.keys()), list(COVERS.values()))
 
-LIBRARY = Library(TRACKS)
+    del COVERS
 
-with open('/home/sidhu/Desktop/temp.pickle', 'wb') as f:
-    pickle.dump(LIBRARY, f)
+    LIBRARY = Library(TRACKS)
+    
+    storage_util.save_library(LIBRARY)
+    
+else:
+    TRACKS = LIBRARY.get_all_tracks()
+
+finish = time.perf_counter()
+print(f'Finished in { finish - start}s')
 
 jinja_globals = {
     'title': 'Sidhu',

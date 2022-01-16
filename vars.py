@@ -23,5 +23,5 @@ elif platform == "win32":
 
 COVER_PATH = os.path.join(LIBRARY_PATH, 'Covers')
 
-DATA_PATH = os.path.join(LIBRARY_PATH, 'data.json')
+DATA_PATH = os.path.join(LIBRARY_PATH, 'library.sidhu')
 
