@@ -7,7 +7,8 @@ from vars import DATA_PATH
 
 class StorageUtil:
     
-    library = None
+    library: Library = None
+    preferences: dict = {}
     
     def __init__(self):
         try:
@@ -24,3 +25,18 @@ class StorageUtil:
     def save_library(self, library):
         with open(DATA_PATH, 'wb') as f:
             pickle.dump(library, f)
+            
+    def set(self, key, value):
+        self.preferences[key] = value
+        
+    def get(self, key):
+        self.preferences.get(key, None)
+
+
+
+if __name__ == '__main__':
+    su = StorageUtil()
+    print(su.get_library())
+    print(su.set('test', 1))
+    print(su.preferences)
+      
