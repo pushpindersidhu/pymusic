@@ -8,7 +8,7 @@ user = getpass.getuser()
 
 if platform == "linux" or platform == "linux2":
     # linux
-    DIRS = [f'/home/{ user }/Music']
+    DIRS = [f'/home/{ user }/Desktop/music']
     LIBRARY_PATH = f'/home/{ user }/Music/Library'
 
 elif platform == "darwin":
