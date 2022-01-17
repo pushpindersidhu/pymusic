@@ -30,15 +30,15 @@ TRACKS = []
 mediaPlayer = MediaPlayer()
 mediaPlayer.setVolume(50)
 INDEX = -1
-HOST = '127.0.0.1'
+HOST = "127.0.0.1"
 PORT = 5911
-FILESERVER_HOST = '127.0.0.1'
+FILESERVER_HOST = "127.0.0.1"
 FILESERVER_PORT = 1984
 INVALID_CHARACTERS = '/\\:*?"<>|'
 repeat = RepeatState.RepeatNone
 music_queue = MusicQueue()
 
-eel.browsers.set_path('electron', 'node_modules/electron/dist/electron')
+eel.browsers.set_path("electron", "node_modules/electron/dist/electron")
 
 while not port_availability(HOST, PORT):
     PORT = random.randint(1000, 65000)
@@ -48,21 +48,28 @@ while not port_availability(FILESERVER_HOST, FILESERVER_PORT):
 
 def remove_invalid_chars(filename: str) -> str:
     for invalid_char in INVALID_CHARACTERS:
-        filename = filename.replace(invalid_char, '')
+        filename = filename.replace(invalid_char, "")
     return filename
 
 
 def save_album_art(path, img_binaries):
     if not os.path.exists(path):
         if img_binaries is not None:
-            with open(path, mode='wb') as img:
+            with open(path, mode="wb") as img:
                 img.write(img_binaries)
 
 
 def duration_to_str(duration):
     minutes = int(duration / 60)
     secs = int(duration % 60)
-    return ("0" if minutes < 10 else "") + str(minutes) + ":" + ("0" if secs < 10 else "") + str(secs)
+    return (
+        ("0" if minutes < 10 else "")
+        + str(minutes)
+        + ":"
+        + ("0" if secs < 10 else "")
+        + str(secs)
+    )
+
 
 start = time.perf_counter()
 storage_util = StorageUtil()
@@ -74,27 +81,29 @@ if LIBRARY is None:
         TRACKS_PATH_LIST.extend(scan(directory))
 
     with ThreadPoolExecutor() as executor:
-        results = executor.map(lambda file: Metadata(
-            file, image=True).to_dict(), TRACKS_PATH_LIST)
+        results = executor.map(
+            lambda file: Metadata(file, image=True).to_dict(), TRACKS_PATH_LIST
+        )
 
     COVERS = {}
 
     for i, result in enumerate(results):
-        result['id'] = i + 1
-        result['formatted_duration'] = duration_to_str(result['duration'])
+        result["id"] = i + 1
+        result["formatted_duration"] = duration_to_str(result["duration"])
         cover_name = result.get("album")
-        if cover_name == 'Unknown Album':
-            cover_name = result.get('title')
+        if cover_name == "Unknown Album":
+            cover_name = result.get("title")
         cover = os.path.join(
-            vars.COVER_PATH, remove_invalid_chars(f'{ cover_name }.jpg'.strip()))
+            vars.COVER_PATH, remove_invalid_chars(f"{ cover_name }.jpg".strip())
+        )
         if cover not in list(COVERS.keys()):
-            COVERS[cover] = result['image']
-        if result['image'] is not None:
-            result['image'] = f'http://{FILESERVER_HOST}:{FILESERVER_PORT}' + cover
+            COVERS[cover] = result["image"]
+        if result["image"] is not None:
+            result["image"] = f"http://{FILESERVER_HOST}:{FILESERVER_PORT}" + cover
         else:
-            result['image'] = None
+            result["image"] = None
         TRACKS.append(result)
-        
+
     print(COVERS.keys())
 
     with ThreadPoolExecutor() as executor:
@@ -103,22 +112,23 @@ if LIBRARY is None:
     del COVERS
 
     LIBRARY = Library(TRACKS)
-    
+
     storage_util.save_library(LIBRARY)
-    
+
 else:
+
     TRACKS = LIBRARY.get_all_tracks()
 
 finish = time.perf_counter()
-print(f'Finished in { finish - start}s')
+print(f"Finished in { finish - start}s")
 
 jinja_globals = {
-    'title': 'Sidhu',
-    'TRACKS': TRACKS,
-    'LIBRARY': LIBRARY,
+    "title": "Sidhu",
+    "TRACKS": TRACKS,
+    "LIBRARY": LIBRARY,
 }
 
-eel.init('web')
+eel.init("web")
 
 
 @eel.expose
@@ -127,7 +137,7 @@ def play_track(index):
     INDEX = index
     if len(TRACKS) == 0:
         return False
-    path = TRACKS[index].get('path')
+    path = TRACKS[index].get("path")
     if os.path.exists(path):
         mediaPlayer.setMedia(path)
         mediaPlayer.play()
@@ -199,7 +209,7 @@ def get_volume():
 
 @eel.expose
 def get_total_duration():
-    return int(TRACKS[INDEX]['duration'])
+    return int(TRACKS[INDEX]["duration"])
 
 
 @eel.expose
@@ -211,7 +221,7 @@ def get_duration():
 
 @eel.expose
 def seek_to(position):
-    position = (int(position * 100_000_000) / 10_000_000_000)
+    position = int(position * 100_000_000) / 10_000_000_000
     mediaPlayer.setPosition(position)
 
 
@@ -232,17 +242,25 @@ def set_album_content(album):
     # album_data = LIBRARY.get_album_by_name(album)
     # return generate_album_template(album_data)
 
+
 @eel.expose
 def set_repeat_state(state):
     global repeat
     repeat = RepeatState(state)
+
 
 @eel.expose
 def get_repeat_state():
     return repeat.value
 
 
-FILESERVER = multiprocessing.Process(target=start_fileserver, args=(FILESERVER_HOST, FILESERVER_PORT,))
+FILESERVER = multiprocessing.Process(
+    target=start_fileserver,
+    args=(
+        FILESERVER_HOST,
+        FILESERVER_PORT,
+    ),
+)
 FILESERVER.start()
 
 
@@ -294,6 +312,7 @@ def onMediaPlayerEndReachedCallback():
     sys.exit()
     return
 
+
 def onMediaPlayerMediaChangedCallback():
     eel.set_playing_metadata(get_playing_metadata())
     return
@@ -306,17 +325,17 @@ mediaPlayer.setOnMediaPlayerMediaChangedCallback(onMediaPlayerMediaChangedCallba
 
 
 eel.start(
-    'templates/index.html',
-    mode='chrome',
+    "templates/index.html",
+    mode="chrome",
     port=PORT,
-    jinja_templates='templates',
+    jinja_templates="templates",
     jinja_global=jinja_globals,
     block=True,
     app_mode=True,
-    cmdline_args=['--disable-http-cache'],
+    cmdline_args=["--disable-http-cache"],
     shutdown_delay=1.0,
     close_callback=close_callback,
 )
 
 FINISH = time.perf_counter()
-print(f'Finished in {FINISH - START}s.')
+print(f"Finished in {FINISH - START}s.")
