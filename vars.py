@@ -18,7 +18,7 @@ elif platform == "darwin":
 
 elif platform == "win32":
     # Windows
-    DIRS = [f'C:\\Users\\{ user }\\Music']
+    DIRS = [f'C:\\Users\\{ user }\\Music', f'D:\\music']
     LIBRARY_PATH = f'C:\\Users\\{ user }\\Music\\Library'
 
 COVER_PATH = os.path.join(LIBRARY_PATH, 'Covers')

@@ -22,6 +22,8 @@ from kill_fileserver import kill_fileserver
 from playback_status import PlaybackStatus
 from mediaplayer_state import MediaState
 from htmlengine import HtmlEngine
+from artwork import scale
+from concurrent.futures import ProcessPoolExecutor
 
 
 START = time.perf_counter()
@@ -32,18 +34,18 @@ mediaPlayer.setVolume(50)
 INDEX = -1
 HOST = "127.0.0.1"
 PORT = 5911
-FILESERVER_HOST = "127.0.0.1"
-FILESERVER_PORT = 1984
+FILESERVER_HOST = "localhost"
+FILESERVER_PORT = 80
 INVALID_CHARACTERS = '/\\:*?"<>|'
 repeat = RepeatState.RepeatNone
 music_queue = MusicQueue()
 
 eel.browsers.set_path("electron", "node_modules/electron/dist/electron")
 
-while not port_availability(HOST, PORT):
-    PORT = random.randint(1000, 65000)
-while not port_availability(FILESERVER_HOST, FILESERVER_PORT):
-    FILESERVER_PORT = random.randint(1000, 65000)
+# while not port_availability(HOST, PORT):
+#     PORT = random.randint(1000, 65000)
+# while not port_availability(FILESERVER_HOST, FILESERVER_PORT):
+#     FILESERVER_PORT = random.randint(1000, 65000)
 
 
 def remove_invalid_chars(filename: str) -> str:
@@ -74,6 +76,7 @@ def duration_to_str(duration):
 start = time.perf_counter()
 storage_util = StorageUtil()
 LIBRARY = storage_util.get_library()
+LIBRARY = None
 
 if LIBRARY is None:
 
@@ -99,15 +102,16 @@ if LIBRARY is None:
         if cover not in list(COVERS.keys()):
             COVERS[cover] = result["image"]
         if result["image"] is not None:
-            result["image"] = f"http://{FILESERVER_HOST}:{FILESERVER_PORT}" + cover
+            result["image"] = f'http://{FILESERVER_HOST}:{FILESERVER_PORT}/' + cover.replace('\\', '/')
         else:
             result["image"] = None
         TRACKS.append(result)
 
-    print(COVERS.keys())
-
     with ThreadPoolExecutor() as executor:
         executor.map(save_album_art, list(COVERS.keys()), list(COVERS.values()))
+
+    with ThreadPoolExecutor() as executor:
+        executor.map(scale, COVERS.keys())
 
     del COVERS
 
@@ -254,21 +258,12 @@ def get_repeat_state():
     return repeat.value
 
 
-FILESERVER = multiprocessing.Process(
-    target=start_fileserver,
-    args=(
-        FILESERVER_HOST,
-        FILESERVER_PORT,
-    ),
-)
-FILESERVER.start()
-
-
 def close_callback(route, websockets):
     if not websockets:
-        kill_fileserver(FILESERVER_HOST, FILESERVER_PORT)
-        FILESERVER.terminate()
-        sys.exit()
+        if FILESERVER is not None:
+            kill_fileserver(FILESERVER_HOST, FILESERVER_PORT)
+            FILESERVER.terminate()
+            sys.exit()
 
 
 def onMediaPlayerTimeChangedCallback():
@@ -324,18 +319,29 @@ mediaPlayer.setOnMediaPlayerEndReachedCallback(onMediaPlayerEndReachedCallback)
 mediaPlayer.setOnMediaPlayerMediaChangedCallback(onMediaPlayerMediaChangedCallback)
 
 
-eel.start(
-    "templates/index.html",
-    mode="chrome",
-    port=PORT,
-    jinja_templates="templates",
-    jinja_global=jinja_globals,
-    block=True,
-    app_mode=True,
-    cmdline_args=["--disable-http-cache"],
-    shutdown_delay=1.0,
-    close_callback=close_callback,
-)
+if __name__ == '__main__':
 
-FINISH = time.perf_counter()
-print(f"Finished in {FINISH - START}s.")
+    FILESERVER = multiprocessing.Process(
+        target=start_fileserver,
+        args=(
+            FILESERVER_HOST,
+            FILESERVER_PORT,
+        ),
+    )
+    FILESERVER.start()
+
+    eel.start(
+        "templates/index.html",
+        mode="chrome",
+        port=PORT,
+        jinja_templates="templates",
+        jinja_global=jinja_globals,
+        block=True,
+        app_mode=True,
+        cmdline_args=["--enable-http-cache"],
+        shutdown_delay=1.0,
+        close_callback=close_callback,
+    )
+
+    FINISH = time.perf_counter()
+    print(f"Finished in {FINISH - START}s.")
