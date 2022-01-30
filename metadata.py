@@ -4,10 +4,9 @@ from tinytag import TinyTag
 
 
 class Metadata:
-
     def __init__(self, file, image=False) -> None:
         self.path = file
-        self.tags = TinyTag.get(file, image=image)
+        self.tags = TinyTag.get(file, image=image, duration=True)
 
     def album(self):
         album = self.tags.album
@@ -120,33 +119,31 @@ class Metadata:
 
     def to_dict(self):
         return {
-            'path': self.path,
-            'album': self.album(),
-            'artist': self.artist(),
-            'album_artist': self.album_artist(),
-            'bitrate': self.bitrate(),
-            'channels': self.channels(),
-            'comment': self.comment(),
-            'composer': self.composer(),
-            'disc': self.disc(),
-            'disc_total': self.disc_total(),
-            'duration': self.duration(),
-            'extra': self.extra(),
-            'filesize': self.filesize(),
-            'genre': self.genre(),
-            'image': self.get_image(),
-            'sample_rate': self.samplerate(),
-            'title': self.title(),
-            'track': self.track(),
-            'track_total': self.track_total(),
-            'year': self.year(),
+            "path": self.path,
+            "album": self.album(),
+            "artist": self.artist(),
+            "album_artist": self.album_artist(),
+            "bitrate": self.bitrate(),
+            "channels": self.channels(),
+            "comment": self.comment(),
+            "composer": self.composer(),
+            "disc": self.disc(),
+            "disc_total": self.disc_total(),
+            "duration": self.duration(),
+            "extra": self.extra(),
+            "filesize": self.filesize(),
+            "genre": self.genre(),
+            "image": self.get_image(),
+            "sample_rate": self.samplerate(),
+            "title": self.title(),
+            "track": self.track(),
+            "track_total": self.track_total(),
+            "year": self.year(),
         }
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import json
 
-    metadata = Metadata(
-        '/home/sidhu/Music/[MP3DOWNLOAD.TO] Sher Rann Vich Lalkaare Maarda (CHAMKAUR SAHIB JUNG) - Kam Lohgarh Ft. '
-        'SOHI BROS-320k.mp3')
+    metadata = Metadata("C:\\Users\\Sidhu\\Downloads\\Bas Yaara Lai Tarsem Jassar.m4a")
     print(json.dumps(metadata.to_dict(), indent=4))
