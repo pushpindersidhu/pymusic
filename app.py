@@ -133,6 +133,7 @@ jinja_globals = {
     "title": "Sidhu",
     "TRACKS": TRACKS,
     "LIBRARY": LIBRARY,
+    "data": LIBRARY.get_album_by_name('Starboy')
 }
 
 eel.init("web")

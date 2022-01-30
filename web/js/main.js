@@ -22,6 +22,7 @@ const playing_time_elapsed = document.getElementById('playing-time-elapsed');
 const nav = document.getElementById('nav');
 const nav_tracks = document.getElementById('nav-tracks');
 const nav_albums = document.getElementById('nav-albums');
+const nav_artists = document.getElementById('nav-artists');
 const search_input = document.getElementById('search');
 const style = getComputedStyle(document.body);
 
@@ -470,3 +471,14 @@ function set_repeat(repeat) {
     //                 <div class="tracks-container-item-text">Unknown Album</div>
     //                 <div class="tracks-container-item-text text-align-end">--:--</div>
     //             </div>` */};
+
+
+nav_tracks.click();
+
+
+container.scrollTo({
+  left: 0,
+  top: container.scrollHeight,
+    behavior: "smooth",
+});
+
