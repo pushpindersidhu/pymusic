@@ -41,20 +41,20 @@
   --nav-item-icon-color: rgba(255, 255, 255, 0.5);
   --nav-item-icon-hover-color: #fff;
   --nav-item-font-size: 14px;
-  --nav-item-font-weight: 600;
+  --nav-item-font-weight: 575;
 
   --sidhu-font-size: 16px;
   --sidhu-font-weight: 600;
 
   --track-primary-font-size: 14px;
-  --track-primary-font-weight: 600;
+  --track-primary-font-weight: 575;
   --track-primary-text-color: rgba(255, 255, 255, 0.9);
   --track-secondary-font-size: 12px;
   --track-secondary-font-weight: 550;
   --track-secondary-text-color: rgba(255, 255, 255, 0.75);
 
   --album-primary-font-size: 14px;
-  --album-primary-font-weight: 600;
+  --album-primary-font-weight: 575;
   --album-primary-text-color: rgba(255, 255, 255, 0.9);
   --album-secondary-font-size: 12px;
   --album-secondary-font-weight: 550;
@@ -86,10 +86,13 @@
     )
     no-repeat center center fixed;
   --background-blur: 50px;
-
 }
 
-@font-face { font-family: Roboto-Regular; src: url('../fonts/Roboto-Regular.ttf'); } 
+@font-face {
+  font-family: 'Varela Round';
+  font-size: 10px;
+  src: url("../fonts/VarelaRound-Regular.ttf");
+}
 
 * {
   user-select: none; /* supported by Chrome and Opera */
@@ -101,7 +104,7 @@
   margin: 0%;
   box-sizing: border-box;
   font-weight: normal;
-  font-family: Roboto-Regular;
+  font-family: "Varela Round";
 }
 
 img {
