@@ -4,6 +4,8 @@ from storage import StorageUtil
 import vars
 import threading
 import pickle
+import subprocess
+import signal
 from musicqueue import MusicQueue
 from repeat import RepeatState
 import os
@@ -13,7 +15,7 @@ import multiprocessing
 import random
 from mediaplayer import MediaPlayer
 from scan import scan
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, thread
 from metadata import Metadata
 from library import Library
 from start_fileserver import start_fileserver
@@ -36,6 +38,7 @@ HOST = "127.0.0.1"
 PORT = 5911
 FILESERVER_HOST = "localhost"
 FILESERVER_PORT = 80
+FILESERVER = None
 INVALID_CHARACTERS = '/\\:*?"<>|'
 repeat = RepeatState.RepeatNone
 music_queue = MusicQueue()
@@ -102,7 +105,7 @@ if LIBRARY is None:
         if cover not in list(COVERS.keys()):
             COVERS[cover] = result["image"]
         if result["image"] is not None:
-            result["image"] = f'http://{FILESERVER_HOST}:{FILESERVER_PORT}/' + cover.replace('\\', '/')
+            result["image"] = f'http://{FILESERVER_HOST}:{1984}/' + cover.replace('\\', '/')
         else:
             result["image"] = None
         TRACKS.append(result)
@@ -257,9 +260,11 @@ def set_repeat_state(state):
 def get_repeat_state():
     return repeat.value
 
-
+fs = None
 def close_callback(route, websockets):
     if not websockets:
+        fs.kill()
+        quit()
         if FILESERVER is not None:
             kill_fileserver(FILESERVER_HOST, FILESERVER_PORT)
             FILESERVER.terminate()
@@ -318,17 +323,27 @@ mediaPlayer.setOnMediaStateChangedCallback(onMediaStateChangedCallback)
 mediaPlayer.setOnMediaPlayerEndReachedCallback(onMediaPlayerEndReachedCallback)
 mediaPlayer.setOnMediaPlayerMediaChangedCallback(onMediaPlayerMediaChangedCallback)
 
+def p():
+    global fs
+    fs = subprocess.Popen(["python", "-m", "http.server", "1984", "--bind", "127.0.0.1", "--directory", "C:/"])
+    return fs
 
 if __name__ == '__main__':
 
-    FILESERVER = multiprocessing.Process(
-        target=start_fileserver,
-        args=(
-            FILESERVER_HOST,
-            FILESERVER_PORT,
-        ),
-    )
-    FILESERVER.start()
+    # FILESERVER = multiprocessing.Process(
+    #     target=start_fileserver,
+    #     args=(
+    #         FILESERVER_HOST,
+    #         FILESERVER_PORT,
+    #     ),
+    # )
+    # FILESERVER.start()
+
+    # python -m http.server 8000 --bind 127.0.0.1 --directory C:/
+    # thread = threading.Thread(target=subprocess.run, args=(["python", "-m", "http.server", "1984", "--bind", "127.0.0.1", "--directory", "C:/"],))
+    thread = threading.Thread(target=p)
+    thread.daemon = True
+    thread.start()
 
     eel.start(
         "templates/index.html",
@@ -338,7 +353,7 @@ if __name__ == '__main__':
         jinja_global=jinja_globals,
         block=True,
         app_mode=True,
-        cmdline_args=["--enable-http-cache"],
+        cmdline_args=["--disable-http-cache"],
         shutdown_delay=1.0,
         close_callback=close_callback,
     )
