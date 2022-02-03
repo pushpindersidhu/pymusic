@@ -202,7 +202,11 @@ seekbar.oninput = function () {
     var duration = this.value;
     var value = (this.value - this.min) / (this.max - this.min) * 100;
     this.style.background = `linear-gradient(to right, ${seekbar_track_color} 0%, ${seekbar_track_color}  ${value}%, ${seekbar_track_bg_color} ${value}%, ${seekbar_track_bg_color} 100%)`;
-    playing_time_elapsed.textContent = duration_to_str(duration - 1);
+    if (duration != 0) {
+        playing_time_elapsed.textContent = duration_to_str(duration - 1);
+    } else {
+        playing_time_elapsed.textContent = duration_to_str(0);
+    }
     eel.seek_to(value);
 };
 
@@ -475,10 +479,34 @@ function set_repeat(repeat) {
 
 nav_tracks.click();
 
+function dive() {
+    var height = container.scrollHeight;
+    for (let index = 0; index < height; index++) {
+        container.scrollTop(index)
+    }
+}
 
-container.scrollTo({
-  left: 0,
-  top: container.scrollHeight,
-    behavior: "smooth",
-});
+class Container{
 
+    constructor(container, nav = null) {
+        this.container = container;
+        this.nav = nav;
+    }
+
+    active() {
+        search_input.value = null;
+        search_input.dispatchEvent(new Event("keyup"));
+        if (scroll_listener != null) {
+          container.removeEventListener("scroll", scroll_listener);
+        }
+        active_container.classList.toggle("inactive-container");
+        tracks_container.classList.toggle("inactive-container");
+        active_container = tracks_container;
+        container.scrollTop = tracks_container_scroll;
+        scroll_listener = function (e) {
+          tracks_container_scroll = container.scrollTop;
+        };
+        container.addEventListener("scroll", scroll_listener);
+    }
+
+}

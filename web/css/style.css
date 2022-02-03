@@ -468,7 +468,7 @@ th:last-child {
 }
 
 .tracks-table-row:hover {
-  background-color: var(--container-item-hover-background);
+  background-color: var(--container-item-hover-background) !important;
 }
 
 .tracks-table-row-id {
